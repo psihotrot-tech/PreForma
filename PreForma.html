@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PreForma — Upitnik</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #B8922A;
+    --gold-light: #D4A93C;
+    --gold-pale: #F7F0E0;
+    --dark: #111111;
+    --mid: #444444;
+    --soft: #888888;
+    --line: #E8E3D8;
+    --bg: #F5F2EC;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(245, 242, 236, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--gold); }
+
+  .tagline-header {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,42,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    color: var(--dark);
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    max-width: 700px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--mid);
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+
+  .cta-btn:hover {
+    background: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(184,146,42,0.3);
+  }
+
+  .cta-btn:hover::before { width: 0; }
+
+  .cta-arrow {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+
+  .scroll-hint {
+    margin-top: 28px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--soft);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+    transition: color 0.3s ease;
+  }
+
+  .scroll-hint:hover { color: var(--gold); }
+
+  .scroll-arrow {
+    font-size: 18px;
+    animation: bounce 1.5s ease infinite;
+    display: block;
+  }
+
+  .time-note {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--soft);
+    letter-spacing: 0.5px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  /* ── SEPARATOR ── */
+  .sep {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 60px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 80px 40px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--dark);
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.75;
+    max-width: 560px;
+  }
+
+  /* ── STEPS ── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .step {
+    background: var(--white);
+    padding: 36px 28px;
+    border-top: 3px solid var(--line);
+    transition: border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step:hover { border-top-color: var(--gold); }
+
+  .step-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--line);
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: -3px;
+    transition: color 0.3s ease;
+  }
+
+  .step:hover .step-num { color: var(--gold-pale); }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--soft);
+    line-height: 1.65;
+  }
+
+  /* ── PRIVACY BOX ── */
+  .privacy-box {
+    background: var(--white);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin-top: 48px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .privacy-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .privacy-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .privacy-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--soft);
+    line-height: 1.65;
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    background: var(--dark);
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bottom-cta::before {
+    content: 'PREFORMA';
+    position: absolute;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: rgba(255,255,255,0.02);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: -8px;
+  }
+
+  .bottom-cta-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .bottom-cta-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--white);
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 40px;
+  }
+
+  .bottom-cta-title em { font-style: italic; color: var(--gold); }
+
+  .cta-btn-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--gold);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn-light:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(184,146,42,0.4);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-author {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    .header { padding: 16px 20px; }
+    .tagline-header { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .section { padding: 60px 24px; }
+    .steps { grid-template-columns: 1fr; }
+    .bottom-cta { padding: 60px 24px; }
+    .footer { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-author { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo"><span>Pre</span>Forma</div>
+  <div class="tagline-header">Where design starts with understanding</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Upitnik za klijente · 3 minuta</div>
+  <h1 class="hero-title">
+    Vaš prostor počinje<br>
+    od <em>razumevanja</em>
+  </h1>
+  <p class="hero-sub">
+    Pre nego što počnemo sa dizajnom, želimo da razumemo kako razmišljate i šta vam je zaista važno. Upitnik traje oko 3 minuta.
+  </p>
+  <a href="#" class="cta-btn" id="mainCta">
+    Popuni upitnik
+    <span class="cta-arrow">→</span>
+  </a>
+  <p class="time-note">10 pitanja · 3 minuta</p>
+  <a href="#section-kako" class="scroll-hint">Saznaj više <span class="scroll-arrow">↓</span></a>
+</section>
+
+<!-- KAKO RADI -->
+<div class="sep"></div>
+<section id="section-kako" class="section reveal">
+  <div class="section-label">Proces</div>
+  <h2 class="section-title">Kako to <em>funkcioniše</em></h2>
+  <p class="section-body">
+    Vaši odgovori pomažu dizajneru da razume vaš stil odlučivanja i pristup projektu — pre prvog sastanka.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Popunite upitnik</div>
+      <div class="step-desc">Deset kratkih pitanja o tome kako pristupate dizajnerskim odlukama. Nema tačnih ili pogrešnih odgovora.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Analiza u pozadini</div>
+      <div class="step-desc">Vaši odgovori se obrađuju kroz sistem razvijen specifično za projektantski kontekst i stil saradnje.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Bolji projekat</div>
+      <div class="step-desc">Dizajner ulazi na prvi sastanak sa razumevanjem vašeg pristupa — manje nedoumica, jasnija komunikacija.</div>
+    </div>
+  </div>
+
+  <div class="privacy-box reveal">
+    <div class="privacy-icon">🔒</div>
+    <div>
+      <div class="privacy-title">Vaši odgovori su privatni</div>
+      <div class="privacy-text">
+        Rezultati upitnika su namenjeni isključivo vašem dizajneru kao alat za pripremu. Vi nećete dobiti nikakav izveštaj niti ocenu — upitnik služi za bolju saradnju, ne za procenu vas kao osobe.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <div class="bottom-cta-label">Spremni ste</div>
+  <h2 class="bottom-cta-title">Tri minuta.<br><em>Bolji početak.</em></h2>
+  <a href="#" class="cta-btn-light" id="bottomCta">
+    Popuni upitnik
+    <span class="cta-arrow">→</span>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo"><span>Pre</span>Forma</div>
+  <div class="footer-copy">Where design starts with understanding</div>
+  <div class="footer-author">
+    Sava Pivnički<br>
+    psihotrot@gmail.com
+  </div>
+</footer>
+
+<script>
+  // ── Link sa emailom arhitekte iz URL parametra ──
+  function getArchitectEmail() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('a') || params.get('email') || '';
+    } catch(e) {
+      return '';
+    }
+  }
+
+  const BASE_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSejfdvmLWQXXrHNk_84CRg8ntbyqzAFwUGeVXKsIB7m6Avbiw/viewform?usp=pp_url&entry.1113747378=';
+
+  function buildFormLink() {
+    const email = getArchitectEmail();
+    return BASE_FORM + encodeURIComponent(email);
+  }
+
+  function init() {
+    const link = buildFormLink();
+    document.getElementById('mainCta').href   = link;
+    document.getElementById('bottomCta').href = link;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
