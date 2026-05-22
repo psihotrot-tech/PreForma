@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PreForma — Upitnik za razumevanje potreba u dizajnu enterijera</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--gold:#B8922A;--dark:#111111;--gray:#F7F7F5;--border:#E8E8E8;--text:#111;--muted:#666}
+  body{font-family:Arial,Helvetica,sans-serif;background:#ECEAE5;color:var(--text);min-height:100vh;padding:2rem 1rem 4rem}
+  .wrap{max-width:660px;margin:0 auto}
+
+  .header{background:#fff;border-bottom:3px solid var(--gold);padding:2rem 2rem 1.5rem;margin-bottom:1.5rem}
+  .logo{font-size:8px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .title{font-size:26px;font-weight:900;color:var(--dark);letter-spacing:-0.5px;line-height:1.15;margin-bottom:10px}
+  .subtitle{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+  .meta{display:flex;gap:16px}
+  .meta span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+
+  .progress-wrap{background:#fff;padding:1rem 2rem;margin-bottom:1rem}
+  .progress-track{height:2px;background:var(--border);border-radius:2px}
+  .progress-fill{height:2px;background:var(--gold);border-radius:2px;width:0%;transition:width 0.4s ease}
+  .progress-label{font-size:10px;color:var(--muted);margin-top:6px;font-weight:500;letter-spacing:0.5px}
+
+  .section-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 0.75rem;display:flex;align-items:center;gap:10px}
+  .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .input-group{background:#fff;padding:1rem 1.25rem;margin-bottom:0.75rem}
+  .input-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
+  .input-group input,.input-group select{width:100%;padding:10px 12px;font-size:13px;border:1px solid var(--border);background:#fff;color:var(--text);font-family:Arial,Helvetica,sans-serif;outline:none;transition:border-color 0.15s}
+  .input-group input:focus,.input-group select:focus{border-color:var(--gold)}
+
+  .pitanje{background:#fff;padding:1.25rem 1.5rem;margin-bottom:0.75rem;border-left:3px solid transparent;transition:border-color 0.2s}
+  .pitanje.answered{border-left-color:var(--gold)}
+  .pitanje-num{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .pitanje-tekst{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:1rem;font-style:italic}
+
+  .likert{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+  .likert input[type=radio]{display:none}
+  .likert label{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;font-size:10px;line-height:1.3;text-align:center;color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;min-height:52px}
+  .likert input:checked+label{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .likert label:hover{border-color:var(--gold);color:var(--gold)}
+
+  .btn-submit{width:100%;padding:14px;background:var(--dark);color:#fff;border:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-top:1.5rem;transition:background 0.2s;font-family:Arial,Helvetica,sans-serif}
+  .btn-submit:hover{background:var(--gold)}
+  .btn-submit:disabled{background:#ccc;cursor:not-allowed}
+  .napomena{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+
+  .success{display:none;background:#fff;padding:3rem 2rem;text-align:center;margin-top:1rem}
+  .success-icon{font-size:40px;color:var(--gold);margin-bottom:1rem}
+  .success-title{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:8px}
+  .success-text{font-size:13px;color:var(--muted);line-height:1.7}
+
+  .err{background:#fff3cd;border:1px solid #ffc107;padding:12px 16px;margin-bottom:1rem;font-size:12px;color:#856404;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="logo">PreForma</div>
+    <div class="title">Upitnik za razumevanje<br>potreba u dizajnu enterijera</div>
+    <div class="subtitle">Pre nego što počnemo sa dizajnom, želimo da razumemo kako razmišljate i šta vam je zaista važno. Nema tačnih ni pogrešnih odgovora.</div>
+    <div class="meta">
+      <span>10 pitanja</span>
+      <span>·</span>
+      <span>3 minuta</span>
+    </div>
+  </div>
+
+  <div id="mainForm">
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="pfBar"></div></div>
+      <div class="progress-label" id="pfLabel">0 od 12 pitanja popunjeno</div>
+    </div>
+
+    <div class="err" id="errMsg">Molimo vas da popunite sva pitanja pre slanja.</div>
+
+    <div class="section-label">Vaši podaci</div>
+
+    <div class="input-group">
+      <label>Ime i prezime *</label>
+      <input type="text" id="fIme" placeholder="Unesite ime i prezime" required>
+    </div>
+
+    <div class="input-group">
+      <label>Tip usluge *</label>
+      <select id="fUsluga">
+        <option value="">— Odaberite —</option>
+        <option value="Projektovanje enterijera">Projektovanje enterijera</option>
+        <option value="Arhitektonsko projektovanje">Arhitektonsko projektovanje</option>
+        <option value="Enterijer + arhitektura (kompletan paket)">Enterijer + arhitektura (kompletan paket)</option>
+      </select>
+    </div>
+
+    <div class="section-label">Pitanja</div>
+    <div id="pfPitanja"></div>
+
+    <button class="btn-submit" id="pfBtn" disabled>Pošalji upitnik →</button>
+    <div class="napomena">Vaši odgovori su poverljivi i koriste se isključivo u svrhu pripreme za projekat.</div>
+  </div>
+
+  <div class="success" id="successMsg">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Hvala Vam!</div>
+    <div class="success-text">Vaši odgovori su uspešno poslati.<br>Vaš projektant će ih uskoro pregledati.</div>
+  </div>
+
+</div>
+
+<script>
+// Čita arhitektin email iz URL ?a=
+function getEmailFromUrl() {
+  var p = new URLSearchParams(window.location.search);
+  return p.get('a') || '';
+}
+
+var FORM_ACTION = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSejfdvmLWQXXrHNk_84CRg8ntbyqzAFwUGeVXKsIB7m6Avbiw/formResponse';
+
+var ENTRIES = [
+  {id:'entry.598031348',  tekst:'Volim da unapred znam tačno kako će prostor izgledati pre nego što se krene u realizaciju.'},
+  {id:'entry.1764701979', tekst:'Prijatnije mi je kada imam više predloga dizajna između kojih mogu da biram.'},
+  {id:'entry.104735770',  tekst:'Male razlike u bojama, linijama i detaljima su mi veoma važne.'},
+  {id:'entry.1307586717', tekst:'Radije se oslanjam na preporuku dizajnera nego na sopstveno istraživanje.'},
+  {id:'entry.829619410',  tekst:'Ako mi se ideja dopadne, nemam problem da brzo donesem odluku.'},
+  {id:'entry.1261267574', tekst:'Važno mi je da prostor ima jasnu funkciju, čak i ako to znači manje estetike.'},
+  {id:'entry.1533922015', tekst:'Često menjam mišljenje kada vidim novu ideju ili inspiraciju.'},
+  {id:'entry.2003710003', tekst:'Volim da učestvujem u svakom koraku dizajna enterijera.'},
+  {id:'entry.1647425783', tekst:'Više mi znači da se u prostoru „osećam dobro" nego da on bude u trendu.'},
+  {id:'entry.216373452',  tekst:'Neprijatno mi je kada se proces oduži zbog dodatnih korekcija.'}
+];
+
+var OPCIJE = ['Uopšte se ne slažem','Delimično se ne slažem','Nisam siguran/a','Delimično se slažem','Potpuno se slažem'];
+
+var container = document.getElementById('pfPitanja');
+ENTRIES.forEach(function(e, i) {
+  var div = document.createElement('div');
+  div.className = 'pitanje';
+  div.id = 'pit'+i;
+  var opcHtml = OPCIJE.map(function(o, j) {
+    return '<div><input type="radio" name="p'+i+'" id="p'+i+'o'+j+'" value="'+o+'">'
+      +'<label for="p'+i+'o'+j+'">'+o+'</label></div>';
+  }).join('');
+  div.innerHTML = '<div class="pitanje-num">Pitanje '+(i+1)+' od '+ENTRIES.length+'</div>'
+    +'<div class="pitanje-tekst">„'+e.tekst+'"</div>'
+    +'<div class="likert">'+opcHtml+'</div>';
+  container.appendChild(div);
+});
+
+// TOTAL = 10 pitanja + ime + usluga = 12
+var TOTAL = ENTRIES.length + 2;
+
+function countFilled() {
+  var n = 0;
+  ENTRIES.forEach(function(e, i) {
+    if (document.querySelector('input[name="p'+i+'"]:checked')) n++;
+  });
+  if (document.getElementById('fIme').value.trim().length > 1) n++;
+  if (document.getElementById('fUsluga').value) n++;
+  return n;
+}
+
+function updateProgress() {
+  var n = countFilled();
+  var pct = Math.round(n / TOTAL * 100);
+  document.getElementById('pfBar').style.width = pct+'%';
+  document.getElementById('pfLabel').textContent = n+' od '+TOTAL+' pitanja popunjeno';
+  document.getElementById('pfBtn').disabled = (n < TOTAL);
+}
+
+document.querySelectorAll('input[type=radio]').forEach(function(r) {
+  r.addEventListener('change', function() {
+    var idx = parseInt(r.name.slice(1));
+    document.getElementById('pit'+idx).classList.add('answered');
+    updateProgress();
+  });
+});
+document.getElementById('fIme').addEventListener('input', updateProgress);
+document.getElementById('fUsluga').addEventListener('change', updateProgress);
+
+document.getElementById('pfBtn').addEventListener('click', function() {
+  var arhEmail = getEmailFromUrl();
+  var ime = document.getElementById('fIme').value.trim();
+  var usluga = document.getElementById('fUsluga').value;
+
+  if (!ime || !usluga) {
+    document.getElementById('errMsg').style.display = 'block';
+    return;
+  }
+  for (var i = 0; i < ENTRIES.length; i++) {
+    if (!document.querySelector('input[name="p'+i+'"]:checked')) {
+      document.getElementById('errMsg').style.display = 'block';
+      return;
+    }
+  }
+  document.getElementById('errMsg').style.display = 'none';
+
+  // Gradimo form i šaljemo u pozadini
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = FORM_ACTION;
+  form.target = 'hidden_iframe';
+  form.style.display = 'none';
+
+  function addField(name, value) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = name;
+    inp.value = value;
+    form.appendChild(inp);
+  }
+
+  // 10 pitanja
+  ENTRIES.forEach(function(e, i) {
+    addField(e.id, document.querySelector('input[name="p'+i+'"]:checked').value);
+  });
+
+  // Ime i prezime
+  addField('entry.13928155', ime);
+
+  // Tip usluge
+  addField('entry.1114253170', usluga);
+
+  // Email arhitekte (skriveno)
+  if (arhEmail) {
+    addField('entry.1113747378', arhEmail);
+  }
+
+  document.body.appendChild(form);
+
+  // Skriveni iframe za submit bez redirecta
+  var iframe = document.getElementById('hidden_iframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.name = 'hidden_iframe';
+    iframe.id = 'hidden_iframe';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }
+
+  form.submit();
+  document.body.removeChild(form);
+
+  // Prikaži success
+  setTimeout(function() {
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo(0,0);
+  }, 600);
+});
+</script>
+</body>
+</html>
