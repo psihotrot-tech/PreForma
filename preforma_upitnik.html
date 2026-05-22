@@ -115,7 +115,7 @@ function getEmailFromUrl() {
   return p.get('a') || '';
 }
 
-var FORM_ACTION = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSejfdvmLWQXXrHNk_84CRg8ntbyqzAFwUGeVXKsIB7m6Avbiw/formResponse';
+var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwcJv3IQp9RhiFMO1URNIHuZcx91DgUMz6dNth6V0Fh3C5d30SsqDvzFz3uAUotwHfKdA/exec';
 
 var ENTRIES = [
   {id:'entry.598031348',  tekst:'Volim da unapred znam tačno kako će prostor izgledati pre nego što se krene u realizaciju.'},
@@ -195,58 +195,34 @@ document.getElementById('pfBtn').addEventListener('click', function() {
   }
   document.getElementById('errMsg').style.display = 'none';
 
-  // Gradimo form i šaljemo u pozadini
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = FORM_ACTION;
-  form.target = 'hidden_iframe';
-  form.style.display = 'none';
-
-  function addField(name, value) {
-    var inp = document.createElement('input');
-    inp.type = 'hidden';
-    inp.name = name;
-    inp.value = value;
-    form.appendChild(inp);
-  }
-
-  // 10 pitanja
+  // Prikupi odgovore
+  var payload = {
+    ime: ime,
+    usluga: usluga,
+    email: arhEmail
+  };
   ENTRIES.forEach(function(e, i) {
-    addField(e.id, document.querySelector('input[name="p'+i+'"]:checked').value);
+    payload['p' + (i+1)] = document.querySelector('input[name="p'+i+'"]:checked').value;
   });
 
-  // Ime i prezime
-  addField('entry.13928155', ime);
+  // Pošalji na Web App
+  document.getElementById('pfBtn').disabled = true;
+  document.getElementById('pfBtn').textContent = 'Šaljem...';
 
-  // Tip usluge
-  addField('entry.1114253170', usluga);
-
-  // Email arhitekte (skriveno)
-  if (arhEmail) {
-    addField('entry.1113747378', arhEmail);
-  }
-
-  document.body.appendChild(form);
-
-  // Skriveni iframe za submit bez redirecta
-  var iframe = document.getElementById('hidden_iframe');
-  if (!iframe) {
-    iframe = document.createElement('iframe');
-    iframe.name = 'hidden_iframe';
-    iframe.id = 'hidden_iframe';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-  }
-
-  form.submit();
-  document.body.removeChild(form);
-
-  // Prikaži success
-  setTimeout(function() {
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function() {
     document.getElementById('mainForm').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
     window.scrollTo(0,0);
-  }, 600);
+  }).catch(function() {
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo(0,0);
+  });
 });
 </script>
 </body>
