@@ -1353,8 +1353,7 @@ body {
 </footer>
 
 <script>
-var FORMS_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSemmKA9MkLyo51FshOm-VZwk-OH9OSs1b2aEBN1W48Ji5EFyA/formResponse';
-var ENTRY_ID  = 'entry.1322228137';
+var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwcJv3IQp9RhiFMO1URNIHuZcx91DgUMz6dNth6V0Fh3C5d30SsqDvzFz3uAUotwHfKdA/exec';
 
 document.getElementById('regBtn').addEventListener('click', function() {
   var email = document.getElementById('regEmail').value.trim();
@@ -1366,30 +1365,18 @@ document.getElementById('regBtn').addEventListener('click', function() {
   document.getElementById('regBtn').textContent = 'Šaljem...';
   document.getElementById('regBtn').disabled = true;
 
-  var iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.name = 'reg_iframe';
-  document.body.appendChild(iframe);
-
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = FORMS_URL;
-  form.target = 'reg_iframe';
-
-  var input = document.createElement('input');
-  input.type = 'hidden';
-  input.name = ENTRY_ID;
-  input.value = email;
-  form.appendChild(input);
-
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-
-  setTimeout(function() {
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain'},
+    body: JSON.stringify({tip: 'registracija', email: email})
+  }).then(function() {
     document.getElementById('regForm').style.display = 'none';
     document.getElementById('regSuccess').style.display = 'block';
-  }, 800);
+  }).catch(function() {
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('regSuccess').style.display = 'block';
+  });
 });
 
 document.getElementById('regEmail').addEventListener('keydown', function(e) {
