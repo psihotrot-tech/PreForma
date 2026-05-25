@@ -699,6 +699,7 @@ document.querySelectorAll('.pitanje').forEach(function(el) {
   observer.observe(el);
 });
 
+// Ukupan broj polja je broj pitanja + 6 opštih inputa
 var TOTAL = ENTRIES.length + 6;
 
 function countFilled() {
@@ -706,7 +707,7 @@ function countFilled() {
   ENTRIES.forEach(function(e, i) {
     if (document.querySelector('input[name="p'+i+'"]:checked')) n++;
   });
-  if (document.getElementById('fIme').value.trim().length > 1) n++;
+  if (document.getElementById('fIme').value.trim().length >= 1) n++;
   if (document.getElementById('fUsluga').value) n++;
   if (document.getElementById('fTipProjekta').value) n++;
   if (document.getElementById('fSkala').value) n++;
@@ -717,12 +718,19 @@ function countFilled() {
 
 function updateProgress() {
   var n = countFilled();
-  var pct = Math.round(n / TOTAL * 100);
+  var pct = Math.round((n / TOTAL) * 100);
   document.getElementById('pfBar').style.width = pct+'%';
   document.getElementById('pfCount').textContent = n+' / '+TOTAL;
-  document.getElementById('pfBtn').disabled = (n < TOTAL);
+  
+  // Dugme se otključava samo ako je n jednako ili veće od TOTAL
+  if (n >= TOTAL) {
+    document.getElementById('pfBtn').disabled = false;
+  } else {
+    document.getElementById('pfBtn').disabled = true;
+  }
 }
 
+// Osluškivanje radio dugmića
 document.querySelectorAll('input[type=radio]').forEach(function(r) {
   r.addEventListener('change', function() {
     var idx = parseInt(r.name.slice(1));
@@ -731,11 +739,15 @@ document.querySelectorAll('input[type=radio]').forEach(function(r) {
   });
 });
 
+// Osluškivanje tekstualnog polja i select-ova u realnom vremenu
 ['fIme','fUsluga','fTipProjekta','fSkala','fBudzet','fKoOdlucuje'].forEach(function(id) {
   var el = document.getElementById(id);
   el.addEventListener('input', updateProgress);
   el.addEventListener('change', updateProgress);
 });
+
+// Prvo inicijalno pokretanje da postavi 0 / 16
+updateProgress();
 
 document.getElementById('pfBtn').addEventListener('click', function() {
   var arhEmail = getEmailFromUrl();
@@ -792,5 +804,3 @@ document.getElementById('pfBtn').addEventListener('click', function() {
   });
 });
 </script>
-</body>
-</html>
