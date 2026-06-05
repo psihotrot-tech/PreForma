@@ -32,7 +32,10 @@ body {
   background: var(--white);
   color: var(--ink);
   overflow-x: hidden;
-  cursor: none;
+}
+
+@media (pointer: fine) {
+  body { cursor: none; }
 }
 
 /* ── CURSOR ── */
@@ -46,6 +49,12 @@ body {
   transform: translate(-50%, -50%);
   transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
   mix-blend-mode: multiply;
+  display: none;
+}
+
+@media (pointer: fine) {
+  .cursor { display: block; }
+  .cursor-ring { display: block; }
 }
 
 .cursor-ring {
@@ -58,6 +67,7 @@ body {
   transform: translate(-50%, -50%);
   transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
   opacity: 0.5;
+  display: none;
 }
 
 body:hover .cursor { opacity: 1; }
@@ -71,11 +81,140 @@ body:hover .cursor { opacity: 1; }
   overflow: hidden;
 }
 
-.arch-bg svg {
+/* Grid linije */
+.arch-grid {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  background-image:
+    linear-gradient(to right, rgba(180,175,165,0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(180,175,165,0.18) 1px, transparent 1px);
+  background-size: 120px 120px;
+}
+
+/* Kompas krug - lijevo dole */
+.arch-compass {
+  position: absolute;
+  bottom: -120px;
+  left: -120px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.12);
+  box-shadow:
+    inset 0 0 0 80px transparent,
+    0 0 0 80px rgba(201,168,76,0.05),
+    0 0 0 160px rgba(201,168,76,0.03);
+}
+
+.arch-compass::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+}
+
+.arch-compass::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 1px;
+  height: 480px;
+  background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.15), transparent);
+}
+
+/* Lenjir - gornji desni */
+.arch-ruler {
+  position: absolute;
+  top: 72px;
+  right: 0;
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(to left, transparent, rgba(201,168,76,0.2), transparent);
+}
+
+.arch-ruler::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  right: 0;
+  width: 1px;
+  height: 48px;
+  background: rgba(201,168,76,0.15);
+}
+
+.arch-ruler::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  right: 20%;
+  width: 1px;
+  height: 32px;
+  background: rgba(201,168,76,0.1);
+}
+
+/* Luk - gornji desni ugao */
+.arch-arc {
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.1);
+}
+
+.arch-arc::before {
+  content: '';
+  position: absolute;
+  top: 80px; left: 80px; right: 80px; bottom: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.07);
+}
+
+/* Zlatni rez spirala - donji desni */
+.arch-spiral {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  border-top-left-radius: 300px;
+  border: 1px solid rgba(201,168,76,0.1);
+}
+
+.arch-spiral::before {
+  content: '';
+  position: absolute;
+  top: 60px; left: 60px;
+  width: 180px;
+  height: 180px;
+  border-top-left-radius: 180px;
+  border: 1px solid rgba(201,168,76,0.07);
+}
+
+.arch-spiral::after {
+  content: '';
+  position: absolute;
+  top: 110px; left: 110px;
+  width: 110px;
+  height: 110px;
+  border-top-left-radius: 110px;
+  border: 1px solid rgba(201,168,76,0.05);
+}
+
+@media (max-width: 768px) {
+  .arch-grid {
+    background-size: 80px 80px;
+    opacity: 0.8;
+  }
+  .arch-compass { width: 320px; height: 320px; bottom: -80px; left: -80px; }
+  .arch-arc { width: 400px; height: 400px; }
+  .arch-spiral { width: 200px; height: 200px; }
 }
 
 /* ── HEADER ── */
@@ -1369,74 +1508,12 @@ body:hover .cursor { opacity: 1; }
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- ARCHITECTURAL BACKGROUND -->
-<div class="arch-bg">
-  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Grid lines - arhitektonski -->
-    <line x1="120" y1="0" x2="120" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="360" y1="0" x2="360" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="600" y1="0" x2="600" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="840" y1="0" x2="840" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="1080" y1="0" x2="1080" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="1320" y1="0" x2="1320" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
-    
-    <line x1="0" y1="150" x2="1440" y2="150" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="0" y1="300" x2="1440" y2="300" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="0" y1="450" x2="1440" y2="450" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="0" y1="600" x2="1440" y2="600" stroke="#E8E8E4" stroke-width="0.5"/>
-    <line x1="0" y1="750" x2="1440" y2="750" stroke="#E8E8E4" stroke-width="0.5"/>
-
-    <!-- Arhitektonski luk - gornji desni ugao -->
-    <path d="M 1200 0 Q 1440 0 1440 200" stroke="#D4A84B" stroke-width="0.8" opacity="0.4"/>
-    <path d="M 1280 0 Q 1440 0 1440 280" stroke="#D4A84B" stroke-width="0.5" opacity="0.25"/>
-    <path d="M 1360 0 Q 1440 0 1440 360" stroke="#D4A84B" stroke-width="0.3" opacity="0.15"/>
-
-    <!-- Kružnica - kompas simbol -->
-    <circle cx="200" cy="600" r="180" stroke="#E2E2DC" stroke-width="0.6" opacity="0.6"/>
-    <circle cx="200" cy="600" r="120" stroke="#E2E2DC" stroke-width="0.4" opacity="0.4"/>
-    <circle cx="200" cy="600" r="60" stroke="#D4A84B" stroke-width="0.4" opacity="0.2"/>
-    <!-- Unakrsne linije kompasa -->
-    <line x1="200" y1="420" x2="200" y2="780" stroke="#E2E2DC" stroke-width="0.5" opacity="0.5"/>
-    <line x1="20" y1="600" x2="380" y2="600" stroke="#E2E2DC" stroke-width="0.5" opacity="0.5"/>
-    <line x1="73" y1="473" x2="327" y2="727" stroke="#E2E2DC" stroke-width="0.3" opacity="0.3"/>
-    <line x1="327" y1="473" x2="73" y2="727" stroke="#E2E2DC" stroke-width="0.3" opacity="0.3"/>
-    <!-- Kompas igla -->
-    <line x1="200" y1="460" x2="200" y2="600" stroke="#D4A84B" stroke-width="0.8" opacity="0.35"/>
-    <polygon points="200,455 196,480 204,480" fill="#D4A84B" opacity="0.3"/>
-
-    <!-- Zlatni rez spirala - donji desni -->
-    <path d="M 1440 750 Q 1440 900 1290 900" stroke="#D4A84B" stroke-width="0.7" opacity="0.3"/>
-    <path d="M 1290 900 Q 1140 900 1140 800" stroke="#D4A84B" stroke-width="0.7" opacity="0.25"/>
-    <path d="M 1140 800 Q 1140 700 1210 700" stroke="#D4A84B" stroke-width="0.5" opacity="0.2"/>
-    <path d="M 1210 700 Q 1280 700 1280 745" stroke="#D4A84B" stroke-width="0.5" opacity="0.15"/>
-
-    <!-- Lenjir sa oznakama - gornji levi -->
-    <line x1="0" y1="80" x2="400" y2="80" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="0" y1="85" x2="0" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="40" y1="83" x2="40" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
-    <line x1="80" y1="85" x2="80" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="120" y1="83" x2="120" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
-    <line x1="160" y1="85" x2="160" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="200" y1="83" x2="200" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
-    <line x1="240" y1="85" x2="240" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="280" y1="83" x2="280" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
-    <line x1="320" y1="85" x2="320" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-    <line x1="360" y1="83" x2="360" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
-    <line x1="400" y1="85" x2="400" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
-
-    <!-- Dijagonalni element - arhitektonski crtež -->
-    <line x1="900" y1="100" x2="1100" y2="400" stroke="#E0E0DA" stroke-width="0.5" opacity="0.4"/>
-    <line x1="950" y1="100" x2="1150" y2="400" stroke="#E0E0DA" stroke-width="0.3" opacity="0.25"/>
-    <line x1="1000" y1="100" x2="1200" y2="400" stroke="#E0E0DA" stroke-width="0.3" opacity="0.2"/>
-
-    <!-- Tačke preseka - crosshair detalji -->
-    <circle cx="360" cy="300" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
-    <circle cx="840" cy="450" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
-    <circle cx="1080" cy="150" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
-    <line x1="357" y1="300" x2="363" y2="300" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
-    <line x1="360" y1="297" x2="360" y2="303" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
-    <line x1="837" y1="450" x2="843" y2="450" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
-    <line x1="840" y1="447" x2="840" y2="453" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
-  </svg>
+<div class="arch-bg" aria-hidden="true">
+  <div class="arch-grid"></div>
+  <div class="arch-compass"></div>
+  <div class="arch-ruler"></div>
+  <div class="arch-arc"></div>
+  <div class="arch-spiral"></div>
 </div>
 
 <!-- HEADER -->
