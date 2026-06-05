@@ -675,6 +675,54 @@ body {
   .footer { flex-direction: column; gap: 12px; text-align: center; }
   .footer-author { text-align: center; }
 }
+
+/* ── PDF PREVIEW ── */
+.pdf-preview-container {
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pdf-preview-img {
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+  transform: rotate(-1deg);
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.05),
+    0 12px 40px rgba(0,0,0,0.3),
+    0 40px 80px rgba(0,0,0,0.25);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.pdf-preview-img:hover {
+  transform: rotate(0deg) scale(1.01);
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.05),
+    0 20px 60px rgba(0,0,0,0.4),
+    0 60px 100px rgba(0,0,0,0.3);
+}
+
+.pdf-preview-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(13,13,13,0.85);
+  color: var(--gold);
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 768px) {
+  .pdf-preview-img { transform: rotate(0deg); }
+}
+
 </style>
 </head>
 <body>
@@ -805,84 +853,14 @@ body {
 
     <div class="preview-wrap">
       <div class="preview-label">Primer generisanog izveštaja</div>
-      <div style="max-width:520px;margin:0 auto">
-        <div class="mockup-card">
-          <div class="mockup-header">
-            <div class="mockup-logo">PreForma · Client Intelligence</div>
-            <div class="mockup-title">Profil projektne dinamike</div>
-            <div class="mockup-meta">
-              <div>
-                <div class="mockup-meta-label">Klijent</div>
-                <div class="mockup-meta-val">Ana Marković</div>
-              </div>
-              <div>
-                <div class="mockup-meta-label">Profil</div>
-                <div class="mockup-meta-val gold">VIZIONAR / KREATIVAC</div>
-              </div>
-              <div>
-                <div class="mockup-meta-label">Tip projekta</div>
-                <div class="mockup-meta-val">Enterijer · Srednji</div>
-              </div>
-              <div>
-                <div class="mockup-meta-label">Ukupni rizik</div>
-                <div class="mockup-meta-val gold">Umeren · Prati scope</div>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-body">
-            <div class="mockup-sec">
-              <div class="mockup-sec-hdr">
-                <div class="mockup-sec-num">02</div>
-                <div class="mockup-sec-title">Mapa operativnih rizika</div>
-              </div>
-              <div class="mockup-risk-row">
-                <div class="mockup-risk-label">Rizik od scope creep-a</div>
-                <div class="mockup-risk-bar"><div class="mockup-risk-fill fill-high"></div></div>
-                <div class="mockup-risk-val val-high">82%</div>
-              </div>
-              <div class="mockup-risk-row">
-                <div class="mockup-risk-label">Rizik od čestih izmena</div>
-                <div class="mockup-risk-bar"><div class="mockup-risk-fill fill-high"></div></div>
-                <div class="mockup-risk-val val-high">74%</div>
-              </div>
-              <div class="mockup-risk-row">
-                <div class="mockup-risk-label">Kašnjenje odluka</div>
-                <div class="mockup-risk-bar"><div class="mockup-risk-fill fill-med"></div></div>
-                <div class="mockup-risk-val val-med">51%</div>
-              </div>
-              <div class="mockup-risk-row">
-                <div class="mockup-risk-label">Rizik na primopredaji</div>
-                <div class="mockup-risk-bar"><div class="mockup-risk-fill fill-med"></div></div>
-                <div class="mockup-risk-val val-med">44%</div>
-              </div>
-              <div class="mockup-risk-row">
-                <div class="mockup-risk-label">Konflikt u komunikaciji</div>
-                <div class="mockup-risk-bar"><div class="mockup-risk-fill fill-low"></div></div>
-                <div class="mockup-risk-val val-low">21%</div>
-              </div>
-            </div>
-            <div class="mockup-sec">
-              <div class="mockup-sec-hdr">
-                <div class="mockup-sec-num">05</div>
-                <div class="mockup-sec-title">Communication protocol</div>
-              </div>
-              <div class="mockup-text-block">
-                <div class="mockup-text-line"></div>
-                <div class="mockup-text-line" style="width:80%"></div>
-                <div class="mockup-text-line" style="width:60%"></div>
-              </div>
-            </div>
-            <div class="mockup-tags">
-              <div class="mockup-tag">Revision Protection</div>
-              <div class="mockup-tag">Scope Lock</div>
-              <div class="mockup-tag">Phase-lock obavezan</div>
-            </div>
-          </div>
-          <div class="mockup-footer">
-            <div class="mockup-footer-logo">PREFORMA</div>
-            <div class="mockup-footer-copy">Sava Pivnički · psihotrot@gmail.com</div>
-          </div>
-        </div>
+      <div class="pdf-preview-container">
+        <img
+          src="preforma_rezime_preview_web.png"
+          alt="PreForma Izvrsni rezime — primer izveštaja"
+          class="pdf-preview-img"
+          loading="lazy"
+        />
+        <div class="pdf-preview-badge">Izvrsni rezime · 1 stranica</div>
       </div>
     </div>
   </div>
@@ -1112,6 +1090,16 @@ var observer = new IntersectionObserver(function(entries) {
 document.querySelectorAll('.reveal').forEach(function(el) {
   observer.observe(el);
 });
+
+
+// ── SERVICE WORKER REGISTRACIJA ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/PreForma/sw.js')
+      .then(function(reg) { console.log('SW registered'); })
+      .catch(function(err) { console.log('SW error:', err); });
+  });
+}
 
 // ── PWA INSTALL BANNER ──
 (function() {
