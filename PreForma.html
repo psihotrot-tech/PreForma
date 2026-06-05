@@ -1102,6 +1102,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ── PWA INSTALL BANNER ──
+document.addEventListener('DOMContentLoaded', function() {
 (function() {
   var deferredPrompt = null;
   var banner = document.getElementById('pwaBanner');
@@ -1117,7 +1118,7 @@ if ('serviceWorker' in navigator) {
     }, 3000);
   });
 
-  if (installBtn) {
+  if (installBtn && banner) {
     installBtn.addEventListener('click', function() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
@@ -1147,10 +1148,11 @@ if ('serviceWorker' in navigator) {
 
   if (isIOS && !isInStandaloneMode && !isDismissed) {
     setTimeout(function() {
-      banner.classList.add('visible');
+      if (banner) banner.classList.add('visible');
     }, 4000);
   }
 })();
+}); // DOMContentLoaded
 
 </script>
 
