@@ -717,6 +717,62 @@ body {
   .pdf-preview-img { transform: rotate(0deg); }
 }
 
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--dark);
+  overflow: hidden;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ticker-inner {
+  display: flex;
+  animation: ticker 30s linear infinite;
+  width: max-content;
+}
+
+.ticker-item {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 0 48px;
+  white-space: nowrap;
+}
+
+.ticker-item span { color: var(--gold); margin-right: 12px; }
+
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── BIJELI TEKST NA TAMNIM POZADINAMA ── */
+.dark-wrap .section-sub,
+.dark-wrap p,
+.dark-wrap .doc-desc { color: rgba(255,255,255,0.65) !important; }
+.dark-wrap .doc-title { color: #FFFFFF !important; }
+.dark-wrap .doc-item { color: rgba(255,255,255,0.6) !important; }
+.stat-label { color: rgba(255,255,255,0.7) !important; }
+.reg-sub { color: rgba(255,255,255,0.65) !important; }
+.reg-note { color: rgba(255,255,255,0.5) !important; }
+.footer-copy, .footer-author { color: rgba(255,255,255,0.5) !important; }
+.preview-label { color: rgba(255,255,255,0.55) !important; }
+.section-label.on-dark { color: rgba(255,255,255,0.85) !important; }
+
+
+/* ── CHAR REVEAL ── */
+.hero-title .char {
+  display: inline;
+  color: rgba(13,13,13,0.12);
+  transition: color 0.4s ease;
+}
+.hero-title em .char {
+  color: rgba(201,168,76,0.2);
+}
+.hero-title .char.lit { color: var(--dark); }
+.hero-title em .char.lit { color: var(--gold); }
+
 </style>
 </head>
 <body>
@@ -757,17 +813,35 @@ body {
 <div class="stat-bar">
   <div class="stat-inner">
     <div class="stat-item">
-      <div class="stat-num">68%</div>
+      <div class="stat-num" data-target="68" data-suffix="%">68%</div>
       <div class="stat-label">projekata kasni zbog<br>neusklađene komunikacije</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">3×</div>
+      <div class="stat-num" data-target="3" data-suffix="×">3×</div>
       <div class="stat-label">više revizija nego što<br>je ugovorom predviđeno</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">40%</div>
+      <div class="stat-num" data-target="40" data-suffix="%">40%</div>
       <div class="stat-label">honorara nestaje u<br>neplaćenom prekovremenom radu</div>
     </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item">Scope Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Revision Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Contract Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Project Control<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Before the First Meeting<span class="ticker-dot"></span></div>
+    <div class="ticker-item">No More Scope Creep<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Scope Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Revision Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Contract Protection<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Project Control<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Before the First Meeting<span class="ticker-dot"></span></div>
+    <div class="ticker-item">No More Scope Creep<span class="ticker-dot"></span></div>
   </div>
 </div>
 
@@ -877,8 +951,8 @@ body {
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <div class="step-title">Dobijate 4 dokumenta</div>
-      <div class="step-desc">Automatski, za nekoliko minuta, direktno na vaš email. Ulazite na prvi sastanak sa kompletnom strategijom — profil, tumačenje, scope i ugovor prilagođen tom klijentu.</div>
+      <div class="step-title">Dobijate 5 dokumenata</div>
+      <div class="step-desc">Automatski, za nekoliko minuta, direktno na vaš email. Ulazite na prvi sastanak sa kompletnom strategijom — rezime, profil, tumačenje, scope i ugovor prilagođen tom klijentu.</div>
     </div>
   </div>
 </section>
@@ -963,7 +1037,7 @@ body {
         Šta tačno dobijam?
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a">Četiri PDF dokumenta isporučena na vaš email automatski: Profil klijenta sa mapom operativnih rizika, Ekspertsko tumačenje sa konkretnim smernicama za vođenje ovog klijenta, Adaptive Scope prilagođen tipu projekta i Ugovor sa klauzulama skrojenim za rizike ovog klijenta.</div>
+      <div class="faq-a">Pet PDF dokumenata isporučena na vaš email automatski: Izvršni rezime sa ključnim uvidima, Profil klijenta sa mapom operativnih rizika, Ekspertsko tumačenje sa konkretnim smernicama za vođenje ovog klijenta, Adaptive Scope prilagođen tipu projekta i Ugovor sa klauzulama skrojenim za rizike ovog klijenta.</div>
     </div>
 
     <div class="faq-item">
@@ -987,7 +1061,7 @@ body {
         Kako funkcioniše sistem kredita?
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a">Svaki popunjen upitnik troši jedan kredit i generiše kompletna 4 dokumenta za tog klijenta. Registracijom dobijate jedan besplatni kredit — dovoljno da vidite kako sistem funkcioniše na realnom klijentu pre nego što kupite paket.</div>
+      <div class="faq-a">Svaki popunjen upitnik troši jedan kredit i generiše kompletnih 5 dokumenata za tog klijenta. Registracijom dobijate jedan besplatni kredit — dovoljno da vidite kako sistem funkcioniše na realnom klijentu pre nego što kupite paket.</div>
     </div>
   </div>
 </div>
@@ -1035,7 +1109,7 @@ body {
 </footer>
 
 <script>
-var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxaDMhjZuOxXSvm6ek_6PytjKhvgJJvwdPCGzgzwYblcUTGcCXT7EBTZpifRVKaKePjuQ/exec';
+var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwyyqD6x9R77lJ3BuOX2M5gmw8ugfLR9D7KF3RCEoWafP6X9O45Itxc4830_KpaFkmC8Q/exec';
 
 document.getElementById('regBtn').addEventListener('click', function() {
   var email = document.getElementById('regEmail').value.trim();
@@ -1084,6 +1158,56 @@ var observer = new IntersectionObserver(function(entries) {
 document.querySelectorAll('.reveal').forEach(function(el) {
   observer.observe(el);
 });
+
+
+// ── COUNTUP NA STAT BROJEVIMA ──
+(function() {
+  function countUp(el) {
+    var target = parseFloat(el.dataset.target);
+    var suffix = el.dataset.suffix || '';
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / 1400, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 4)) * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { countUp(e.target); obs.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-num[data-target]').forEach(function(el) { obs.observe(el); });
+})();
+
+// ── CHAR REVEAL NA HERO NASLOVU ──
+(function() {
+  var titleEl = document.querySelector('.hero-title');
+  if (!titleEl) return;
+
+  function wrapChars(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      var frag = document.createDocumentFragment();
+      node.textContent.split('').forEach(function(ch) {
+        var s = document.createElement('span');
+        s.className = 'char';
+        s.textContent = ch;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
+      Array.from(node.childNodes).forEach(wrapChars);
+    }
+  }
+
+  Array.from(titleEl.childNodes).forEach(wrapChars);
+
+  var chars = Array.from(titleEl.querySelectorAll('.char'));
+  chars.forEach(function(ch, i) {
+    setTimeout(function() { ch.classList.add('lit'); }, 40 + i * 28);
+  });
+})();
+
 </script>
 </body>
 </html>
