@@ -1103,73 +1103,67 @@ if ('serviceWorker' in navigator) {
 
 // ── PWA INSTALL BANNER ──
 document.addEventListener('DOMContentLoaded', function() {
-(function() {
   var deferredPrompt = null;
   var banner = document.getElementById('pwaBanner');
   var installBtn = document.getElementById('pwaInstall');
   var closeBtn = document.getElementById('pwaClose');
+  var bannerText = document.querySelector('.pwa-banner-text');
+  var bannerSub = document.querySelector('.pwa-banner-sub');
 
-  // Android/Chrome — native install prompt
-  window.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    setTimeout(function() {
-      banner.classList.add('visible');
-    }, 3000);
-  });
+  if (!banner) return;
 
-  if (installBtn && banner) {
-    installBtn.addEventListener('click', function() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function() {
-          deferredPrompt = null;
-          banner.classList.remove('visible');
-        });
-      } else {
-        // iOS Safari — pokaži uputstvo
-        installBtn.textContent = 'Tap Share → Dodaj na početni ekran';
-        installBtn.style.fontSize = '10px';
-      }
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
+  var isAndroid = /android/i.test(navigator.userAgent.toLowerCase());
+  var isInStandaloneMode = window.navigator.standalone === true
+    || window.matchMedia('(display-mode: standalone)').matches;
+  var isDismissed = sessionStorage.getItem('pwa-dismissed');
+
+  if (isInStandaloneMode || isDismissed) return;
+
+  // ── ANDROID — čekaj beforeinstallprompt ──
+  if (isAndroid) {
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (bannerText) bannerText.textContent = 'Dodajte PreFormu na ekran';
+      if (bannerSub) bannerSub.textContent = 'Pristup bez otvaranja browsera';
+      if (installBtn) installBtn.textContent = 'Dodaj na ekran →';
+      setTimeout(function() { banner.classList.add('visible'); }, 2000);
     });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', function() {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(function(result) {
+            deferredPrompt = null;
+            banner.classList.remove('visible');
+          });
+        }
+      });
+    }
   }
 
+  // ── iOS — odmah prikaži uputstvo ──
+  if (isIOS) {
+    if (bannerText) bannerText.textContent = 'Sačuvajte PreFormu na iPhone';
+    if (bannerSub) bannerSub.textContent = 'Share → Dodaj na početni ekran';
+    if (installBtn) {
+      installBtn.textContent = 'Kako? →';
+      installBtn.addEventListener('click', function() {
+        if (bannerText) bannerText.textContent = '1. Kliknite Share ↑ u Safariju';
+        if (bannerSub) bannerSub.textContent = '2. Odaberite "Dodaj na početni ekran"';
+        installBtn.style.display = 'none';
+      });
+    }
+    setTimeout(function() { banner.classList.add('visible'); }, 2000);
+  }
+
+  // ── CLOSE ──
   if (closeBtn) {
     closeBtn.addEventListener('click', function() {
       banner.classList.remove('visible');
       sessionStorage.setItem('pwa-dismissed', '1');
     });
   }
-
-  // iOS — pokaži banner posle 4 sekunde ako nije dismissed
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var isInStandaloneMode = window.navigator.standalone === true;
-  var isDismissed = sessionStorage.getItem('pwa-dismissed');
-
-  if (isIOS && !isInStandaloneMode && !isDismissed) {
-    setTimeout(function() {
-      if (banner) banner.classList.add('visible');
-    }, 4000);
-  }
-})();
-}); // DOMContentLoaded
-
-</script>
-
-<!-- PWA BANNER -->
-<div class="pwa-banner" id="pwaBanner">
-  <div class="pwa-banner-left">
-    <div class="pwa-banner-icon">PF</div>
-    <div>
-      <div class="pwa-banner-text">Sačuvajte PreFormu na telefon</div>
-      <div class="pwa-banner-sub">Brz pristup bez otvaranja browsera</div>
-    </div>
-  </div>
-  <div class="pwa-banner-actions">
-    <button class="pwa-btn-install" id="pwaInstall">Dodaj na ekran →</button>
-    <button class="pwa-btn-close" id="pwaClose">×</button>
-  </div>
-</div>
-
-</body>
-</html>
+});
