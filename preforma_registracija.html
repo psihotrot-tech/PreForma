@@ -4,461 +4,1096 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PreForma — Projektna inteligencija pre prvog sastanka</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --gold: #C9A84C;
-  --gold-light: #D4B86A;
-  --gold-pale: #FBF5E6;
-  --dark: #111111;
-  --mid: #444444;
-  --soft: #888888;
-  --line: #E8E3D8;
-  --bg: #F5F2EC;
-  --white: #FFFFFF;
+  --ink:    #0A0A0A;
+  --ink-2:  #1A1A1A;
+  --ink-3:  #2A2A2A;
+  --ash:    #6B6B6B;
+  --mist:   #A8A8A8;
+  --line:   #E2E2E2;
+  --paper:  #FAFAF8;
+  --white:  #FFFFFF;
+  --gold:   #C9A84C;
+  --gold-l: #E2C97E;
+  --gold-p: #FBF6EC;
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --mono:   'Space Mono', monospace;
+  --sans:   'DM Sans', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-  min-height: 100vh;
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--ink);
   overflow-x: hidden;
+  cursor: none;
 }
 
+/* ── CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: multiply;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.5;
+}
+
+body:hover .cursor { opacity: 1; }
+
+/* ── ARCHITECTURAL BACKGROUND ── */
+.arch-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.arch-bg svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── HEADER ── */
 .header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  padding: 20px 48px;
+  padding: 0 48px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(245, 242, 236, 0.95);
-  backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);
 }
 
-.logo { font-family: 'Syne', sans-serif; font-size: 22px; color: var(--dark); letter-spacing: -0.5px; }
-.logo span { color: var(--gold); }
-
-.header-cta {
-  display: inline-flex;
+.logo {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
+}
+
+.logo-mark {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.logo-mark::before {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+  opacity: 0.5;
+}
+
+.logo-mark span {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--gold);
+  position: relative;
+  z-index: 1;
+}
+
+.logo em { font-style: italic; color: var(--gold); }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-link:hover { color: var(--ink); }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--white);
-  background: var(--dark);
+  background: var(--ink);
   text-decoration: none;
-  padding: 10px 24px;
+  padding: 10px 20px;
   transition: background 0.3s;
 }
 
-.header-cta:hover { background: var(--gold); }
+.nav-cta:hover { background: var(--gold); }
 
+/* ── HERO ── */
 .hero {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 120px 48px 80px;
+  padding: 80px 48px 40px;
   position: relative;
-  overflow: hidden;
-  max-width: 760px;
+  z-index: 1;
+  gap: 80px;
+  max-width: 1400px;
   margin: 0 auto;
-  text-align: center;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -300px; right: -300px;
-  width: 800px; height: 800px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.hero-label {
+.hero-eyebrow {
+  font-family: var(--mono);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   opacity: 0;
-  animation: fadeUp 0.8s ease 0.2s forwards;
+  animation: fadeIn 0.8s ease 0.3s forwards;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
 }
 
 .hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(40px, 4.5vw, 68px);
-  font-weight: 800;
-  color: var(--dark);
+  font-family: var(--serif);
+  font-size: clamp(48px, 5.5vw, 88px);
+  font-weight: 300;
   line-height: 1.05;
-  letter-spacing: -2.5px;
-  margin-bottom: 28px;
+  letter-spacing: -1px;
+  color: var(--ink);
+  margin-bottom: 32px;
   opacity: 0;
-  animation: fadeUp 0.8s ease 0.4s forwards;
+  animation: fadeIn 0.8s ease 0.5s forwards;
 }
 
-.hero-title em { font-style: italic; color: var(--gold); }
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
 
-.hero-sub {
-  font-size: 19px;
+.hero-title strong {
+  font-weight: 600;
+}
+
+.hero-body {
+  font-size: 17px;
   font-weight: 300;
-  color: var(--mid);
-  line-height: 1.75;
-  max-width: 560px;
-  margin: 0 auto 48px;
+  color: var(--ash);
+  line-height: 1.8;
+  max-width: 440px;
+  margin-bottom: 48px;
   opacity: 0;
-  animation: fadeUp 0.8s ease 0.6s forwards;
+  animation: fadeIn 0.8s ease 0.7s forwards;
 }
 
 .hero-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 24px;
-  flex-wrap: wrap;
   opacity: 0;
-  animation: fadeUp 0.8s ease 0.8s forwards;
+  animation: fadeIn 0.8s ease 0.9s forwards;
 }
 
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--dark);
+  background: var(--ink);
   color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 18px 40px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 16px 32px;
+  border: 1px solid var(--ink);
+  transition: all 0.3s;
   position: relative;
   overflow: hidden;
 }
 
-.btn-primary::before {
+.btn-primary::after {
   content: '';
   position: absolute;
-  left: 0; top: 0;
-  width: 4px; height: 100%;
+  inset: 0;
   background: var(--gold);
-  transition: width 0.3s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
 }
 
-.btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.3); }
-.btn-primary:hover::before { width: 0; }
-.btn-arrow { font-size: 19px; transition: transform 0.3s; }
-.btn-primary:hover .btn-arrow { transform: translateX(4px); }
-.hero-note { font-size: 14px; color: var(--soft); letter-spacing: 0.3px; }
+.btn-primary:hover::after { transform: scaleX(1); }
+.btn-primary:hover { border-color: var(--gold); }
+.btn-primary span { position: relative; z-index: 1; }
 
-.scroll-hint {
-  margin-top: 32px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: var(--soft);
+.btn-ghost {
+  font-family: var(--mono);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 3px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 1.2s forwards;
-  transition: color 0.3s ease;
-}
-
-.scroll-hint:hover { color: var(--gold); }
-.scroll-arrow { font-size: 20px; animation: bounce 1.5s ease infinite; display: block; }
-
-.stat-bar {
-  background: var(--dark);
-  padding: 36px 48px;
+  color: var(--ash);
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  transition: color 0.2s;
 }
 
-.stat-inner {
-  max-width: 900px;
-  width: 100%;
+.btn-ghost:hover { color: var(--ink); }
+
+.btn-ghost::after {
+  content: '↓';
+  font-size: 14px;
+}
+
+/* ── HERO VISUAL ── */
+.hero-visual {
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.6s forwards;
+}
+
+.hero-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.04);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.card-header {
+  background: var(--ink);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header-left {}
+
+.card-badge {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.card-name {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: -0.5px;
+}
+
+.card-profile {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 5px 12px;
+  border: 1px solid rgba(201,168,76,0.3);
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.card-meta {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.2);
+}
+
+.card-meta-item {
+  padding: 12px 16px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+
+.card-meta-item:last-child { border-right: none; }
+
+.card-meta-label {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 4px;
+}
+
+.card-meta-val {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.card-meta-val.danger { color: #E05A3A; }
+.card-meta-val.warn   { color: #D4A843; }
+.card-meta-val.safe   { color: #5A9E6F; }
+
+.card-body { padding: 20px 24px; }
+
+.risk-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.risk-label {
+  font-size: 11px;
+  color: var(--ash);
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.risk-track {
+  flex: 1;
+  height: 3px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.risk-fill {
+  height: 100%;
+  transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.risk-fill.h { background: #E05A3A; width: 0%; }
+.risk-fill.m { background: #D4A843; width: 0%; }
+.risk-fill.l { background: #5A9E6F; width: 0%; }
+
+.risk-pct {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  width: 32px;
+  text-align: right;
+}
+
+.risk-pct.h { color: #E05A3A; }
+.risk-pct.m { color: #D4A843; }
+.risk-pct.l { color: #5A9E6F; }
+
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.card-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-p);
+  padding: 4px 10px;
+  border: 1px solid rgba(201,168,76,0.2);
+}
+
+.card-footer {
+  background: var(--paper);
+  padding: 10px 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-footer-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+/* Floating data points */
+.data-float {
+  position: absolute;
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+}
+
+.data-float-1 {
+  top: -24px;
+  right: -32px;
+  animation: float1 4s ease-in-out infinite;
+}
+
+.data-float-2 {
+  bottom: -20px;
+  left: -28px;
+  animation: float2 5s ease-in-out infinite;
+}
+
+.data-float-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.data-float-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-top: 2px;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50% { transform: translateY(6px) rotate(-1deg); }
+}
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  position: relative;
+  z-index: 1;
+  background: var(--ink);
+  padding: 0;
+  overflow: hidden;
+}
+
+.stats-strip::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.stats-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 48px;
 }
 
 .stat-item {
+  padding: 40px 0;
   text-align: center;
-  padding: 0 40px;
   border-right: 1px solid rgba(255,255,255,0.07);
+  position: relative;
 }
 
 .stat-item:last-child { border-right: none; }
 
 .stat-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 40px;
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 300;
   color: var(--gold);
-  letter-spacing: -1.5px;
   line-height: 1;
+  letter-spacing: -2px;
   margin-bottom: 8px;
+  display: block;
 }
 
-.stat-label { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.35); line-height: 1.5; }
+.stat-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
 
-.section { padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--gold);
+  padding: 10px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
 
-.section-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 4px;
+.ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 25s linear infinite;
+  width: max-content;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.45);
+  padding: 0 32px;
+}
+
+.ticker-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+}
+
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTION BASE ── */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 140px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.section-label.on-dark { color: rgba(255,255,255,0.75); }
-.section-label.on-dark::after { background: rgba(255,255,255,0.08); }
+.section-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
 
 .section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 800;
-  color: var(--dark);
-  letter-spacing: -2px;
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.5vw, 68px);
+  font-weight: 300;
+  color: var(--ink);
   line-height: 1.08;
-  margin-bottom: 16px;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
 }
 
 .section-title em { font-style: italic; color: var(--gold); }
-.section-title.on-dark { color: var(--white); }
+.section-title strong { font-weight: 600; }
 
-.section-sub { font-size: 19px; font-weight: 300; color: var(--mid); line-height: 1.75; max-width: 540px; margin-bottom: 64px; }
-.section-sub.on-dark { color: rgba(255,255,255,0.45); }
-
-.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-
-.problem-item {
-  background: var(--white);
-  padding: 40px 32px;
-  border-top: 3px solid var(--line);
-  transition: border-color 0.3s;
+.section-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--ash);
+  line-height: 1.8;
+  max-width: 520px;
+  margin-bottom: 72px;
 }
 
-.problem-item:hover { border-top-color: var(--gold); }
-
-.problem-quote {
-  font-family: 'Syne', sans-serif;
-  font-size: 19px;
-  font-style: italic;
-  color: var(--mid);
-  line-height: 1.65;
-  margin-bottom: 24px;
-  padding-left: 16px;
-  border-left: 2px solid var(--line);
-  transition: border-color 0.3s;
-}
-
-.problem-item:hover .problem-quote { border-left-color: var(--gold); }
-.problem-result { font-size: 14px; font-weight: 600; color: var(--gold); letter-spacing: 0.3px; line-height: 1.5; }
-
-.dark-wrap {
-  background: var(--dark);
-  padding: 120px 48px;
+/* ── PROBLEM ── */
+.problem-section {
+  background: var(--paper);
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+  padding: 140px 0;
 }
 
-.dark-wrap::before {
+.problem-section::before {
   content: '';
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1000px; height: 1000px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 60%);
-  pointer-events: none;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--line);
 }
 
-.dark-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+.problem-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
 
-.documents { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 64px;
+}
 
-.document {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 44px 40px;
-  transition: border-color 0.3s, background 0.3s;
+.problem-card {
+  background: var(--white);
+  padding: 48px 36px;
   position: relative;
+  transition: background 0.3s;
 }
 
-.document.featured { border-color: rgba(201,168,76,0.25); background: rgba(201,168,76,0.04); }
-
-.document.featured::before {
-  content: 'Najtraženije';
+.problem-card::before {
+  content: '';
   position: absolute;
-  top: 20px; right: 20px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid rgba(201,168,76,0.3);
-  padding: 4px 10px;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--line);
+  transition: background 0.3s;
 }
 
-.document:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.03); }
+.problem-card:hover { background: var(--gold-p); }
+.problem-card:hover::before { background: var(--gold); }
 
-.doc-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 56px;
-  color: rgba(255,255,255,0.04);
+.problem-num {
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 300;
+  color: var(--line);
   line-height: 1;
   letter-spacing: -3px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
   transition: color 0.3s;
 }
 
-.document:hover .doc-num,
-.document.featured .doc-num { color: rgba(201,168,76,0.12); }
+.problem-card:hover .problem-num { color: rgba(201,168,76,0.15); }
 
-.doc-title { font-size: 19px; font-weight: 600; color: var(--white); margin-bottom: 12px; letter-spacing: -0.3px; }
-.doc-desc  { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.8; margin-bottom: 28px; }
-.doc-list  { display: flex; flex-direction: column; gap: 9px; }
+.problem-quote {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-3);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.problem-result {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--gold);
+  line-height: 1.6;
+}
+
+/* ── SOLUTION ── */
+.solution-section {
+  background: var(--ink);
+  position: relative;
+  z-index: 1;
+  padding: 140px 0;
+  overflow: hidden;
+}
+
+.solution-section::before {
+  content: 'PREFORMA';
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 320px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.018);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  letter-spacing: -16px;
+  pointer-events: none;
+}
+
+.solution-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.solution-inner .section-title { color: var(--white); }
+.solution-inner .section-sub { color: rgba(255,255,255,0.45); }
+.solution-inner .section-tag { color: var(--gold); }
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.doc-card {
+  background: rgba(255,255,255,0.02);
+  padding: 48px 40px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.doc-card:hover { background: rgba(201,168,76,0.04); }
+
+.doc-card.featured {
+  background: rgba(201,168,76,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+}
+
+.doc-card-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-card-num {
+  font-family: var(--serif);
+  font-size: 80px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  letter-spacing: -4px;
+  transition: color 0.3s;
+}
+
+.doc-card:hover .doc-card-num { color: rgba(201,168,76,0.08); }
+
+.doc-card-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+}
+
+.doc-card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .doc-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 14px;
-  color: rgba(255,255,255,0.3);
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
   line-height: 1.5;
 }
 
-.doc-item::before { content: '→'; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+.doc-arrow { color: var(--gold); flex-shrink: 0; }
 
-.preview-wrap { margin-top: 80px; }
+.doc-item.highlight {
+  color: rgba(201,168,76,0.7);
+  font-weight: 500;
+}
 
-.preview-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+/* ── PDF PREVIEW ── */
+.pdf-preview-wrap {
+  margin-top: 80px;
   text-align: center;
+}
+
+.pdf-preview-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
   margin-bottom: 32px;
 }
 
-.mockup-card {
+.pdf-preview-container {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pdf-preview-img {
+  width: 100%;
+  display: block;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.3);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.pdf-preview-img:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 60px 120px rgba(0,0,0,0.6), 0 12px 48px rgba(0,0,0,0.4);
+}
+
+.pdf-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+}
+
+/* ── PROCESS ── */
+.process-section {
   background: var(--white);
+  position: relative;
+  z-index: 1;
+  padding: 140px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.process-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
   border: 1px solid var(--line);
-  box-shadow: 0 32px 80px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
-  overflow: hidden;
+  margin-top: 64px;
 }
 
-.mockup-header { background: #111; padding: 20px 24px 18px; }
-.mockup-logo { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
-.mockup-title { font-family: 'Syne', sans-serif; font-size: 19px; color: var(--white); letter-spacing: -0.5px; margin-bottom: 14px; }
-.mockup-meta { display: grid; grid-template-columns: 1fr; gap: 10px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; }
-.mockup-meta-label { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3px; }
-.mockup-meta-val { font-size: 14px; color: var(--white); font-weight: 500; }
-.mockup-meta-val.gold { color: var(--gold); }
-.mockup-body { padding: 20px 24px; }
-.mockup-sec { margin-bottom: 16px; }
-.mockup-sec-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.mockup-sec-num { background: var(--gold); color: var(--white); font-size: 10px; font-weight: 700; padding: 2px 7px; }
-.mockup-sec-title { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); }
-.mockup-risk-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.mockup-risk-label { font-size: 10px; color: var(--mid); width: 150px; flex-shrink: 0; }
-.mockup-risk-bar { flex: 1; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
-.mockup-risk-fill { height: 100%; border-radius: 2px; }
-.fill-high { background: #D85A30; width: 82%; }
-.fill-med  { background: #BA7517; width: 54%; }
-.fill-low  { background: #3B7A35; width: 22%; }
-.mockup-risk-val { font-size: 9px; font-weight: 700; width: 30px; text-align: right; flex-shrink: 0; }
-.val-high { color: #D85A30; }
-.val-med  { color: #BA7517; }
-.val-low  { color: #3B7A35; }
-.mockup-text-block { background: var(--bg); padding: 10px 12px; margin-bottom: 6px; }
-.mockup-text-line { height: 6px; background: var(--line); border-radius: 3px; margin-bottom: 5px; }
-.mockup-text-line:last-child { margin-bottom: 0; width: 70%; }
-.mockup-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.mockup-tag { font-size: 9px; background: var(--bg); color: var(--soft); padding: 3px 8px; border: 1px solid var(--line); }
-.mockup-footer { background: #111; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; }
-.mockup-footer-logo { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--gold); }
-.mockup-footer-copy { font-size: 8px; color: rgba(255,255,255,0.2); }
-
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-
-.step {
-  background: var(--white);
-  padding: 44px 36px;
-  border-top: 3px solid var(--line);
-  transition: border-color 0.3s;
+.step-card {
+  padding: 52px 44px;
+  border-right: 1px solid var(--line);
+  position: relative;
+  transition: background 0.3s;
 }
 
-.step:hover { border-top-color: var(--gold); }
+.step-card:last-child { border-right: none; }
+.step-card:hover { background: var(--paper); }
 
 .step-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 60px;
-  color: var(--line);
-  line-height: 1;
-  letter-spacing: -3px;
-  margin-bottom: 24px;
-  transition: color 0.3s;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.step:hover .step-num { color: var(--gold-pale); }
-.step-title { font-size: 19px; font-weight: 600; color: var(--dark); margin-bottom: 12px; letter-spacing: -0.3px; }
-.step-desc  { font-size: 14px; font-weight: 300; color: var(--soft); line-height: 1.8; }
+.step-num::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
 
-.roi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 64px; }
+.step-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
 
-.roi-item {
+.step-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ash);
+  line-height: 1.8;
+}
+
+/* ── ROI ── */
+.roi-section {
+  background: var(--paper);
+  position: relative;
+  z-index: 1;
+  padding: 140px 0;
+}
+
+.roi-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.roi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 64px;
+}
+
+.roi-card {
   background: var(--white);
-  padding: 36px 32px;
+  padding: 40px 36px;
   display: flex;
   gap: 24px;
   align-items: flex-start;
-  transition: box-shadow 0.3s;
+  transition: background 0.3s;
 }
 
-.roi-item:hover { box-shadow: inset 3px 0 0 var(--gold); }
-.roi-num   { font-family: 'Syne', sans-serif; font-size: 36px; color: var(--gold); letter-spacing: -1px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
-.roi-title { font-size: 19px; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
-.roi-desc  { font-size: 14px; font-weight: 300; color: var(--soft); line-height: 1.7; }
+.roi-card:hover { background: var(--gold-p); }
 
-.faq-wrap {
+.roi-icon {
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.roi-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+}
+
+.roi-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ash);
+  line-height: 1.7;
+}
+
+/* ── BUY ── */
+.buy-section {
   background: var(--white);
+  position: relative;
+  z-index: 1;
+  padding: 80px 48px;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 120px 48px;
+  text-align: center;
 }
 
-.faq-inner { max-width: 760px; margin: 0 auto; }
+.buy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 20px 48px;
+  border: 1px solid var(--ink);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
 
-.faq-item { border-bottom: 1px solid var(--line); }
-.faq-item:last-child { border-bottom: none; }
+.buy-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.buy-btn:hover::after { transform: scaleX(1); }
+.buy-btn span { position: relative; z-index: 1; }
+.buy-sub { margin-top: 16px; font-size: 14px; font-weight: 300; color: var(--ash); }
+.buy-pay { margin-top: 6px; font-size: 12px; color: var(--mist); }
+
+/* ── FAQ ── */
+.faq-section {
+  background: var(--white);
+  position: relative;
+  z-index: 1;
+  padding: 140px 48px;
+}
+
+.faq-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+}
 
 .faq-q {
   display: flex;
@@ -467,21 +1102,24 @@ body {
   gap: 24px;
   padding: 24px 0;
   cursor: pointer;
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--dark);
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ink);
   line-height: 1.4;
   user-select: none;
+  transition: color 0.2s;
 }
 
 .faq-q:hover { color: var(--gold); }
 
 .faq-icon {
-  font-size: 20px;
+  font-family: var(--mono);
+  font-size: 18px;
   color: var(--gold);
   flex-shrink: 0;
   transition: transform 0.3s;
-  font-weight: 300;
+  line-height: 1;
 }
 
 .faq-item.open .faq-icon { transform: rotate(45deg); }
@@ -489,7 +1127,7 @@ body {
 .faq-a {
   font-size: 15px;
   font-weight: 300;
-  color: var(--mid);
+  color: var(--ash);
   line-height: 1.8;
   padding-bottom: 24px;
   display: none;
@@ -497,103 +1135,136 @@ body {
 
 .faq-item.open .faq-a { display: block; }
 
-.buy-wrap {
-  background: var(--bg);
+/* ── AUTHOR ── */
+.author-section {
+  background: var(--paper);
+  position: relative;
+  z-index: 1;
   padding: 80px 48px;
-  text-align: center;
-  border-bottom: 1px solid var(--line);
-}
-
-.buy-btn {
-  display: inline-block;
-  background: var(--dark);
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 18px 48px;
-  border-left: 4px solid var(--gold);
-  transition: all 0.3s;
-}
-
-.buy-btn:hover { background: var(--gold); border-left-color: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.3); }
-.buy-sub { margin-top: 16px; font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.6; }
-.buy-pay { margin-top: 8px; font-size: 12px; color: var(--soft); letter-spacing: 0.3px; }
-
-.author-wrap {
-  background: var(--white);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 80px 48px;
 }
 
-.author-inner { max-width: 800px; margin: 0 auto; display: flex; gap: 64px; align-items: flex-start; }
-.author-line  { width: 3px; background: var(--gold); flex-shrink: 0; align-self: stretch; min-height: 120px; }
-.author-name  { font-family: 'Syne', sans-serif; font-size: 30px; color: var(--dark); letter-spacing: -1px; margin-bottom: 6px; }
-.author-title { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-.author-text  { font-size: 19px; font-weight: 300; color: var(--mid); line-height: 1.85; }
+.author-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 56px;
+  align-items: flex-start;
+}
 
-.reg-wrap {
-  background: var(--dark);
-  padding: 140px 48px;
-  text-align: center;
+.author-accent {
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  flex-shrink: 0;
+  align-self: stretch;
+  min-height: 140px;
+}
+
+.author-name {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.author-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.author-text {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--ash);
+  line-height: 1.85;
+}
+
+/* ── REGISTRATION ── */
+.reg-section {
+  background: var(--ink);
   position: relative;
+  z-index: 1;
+  padding: 160px 48px;
+  text-align: center;
   overflow: hidden;
 }
 
-.reg-wrap::before {
-  content: 'PREFORMA';
+.reg-section::before {
+  content: '';
   position: absolute;
-  font-family: 'Syne', sans-serif;
-  font-size: 280px;
-  color: rgba(255,255,255,0.012);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  pointer-events: none;
-  letter-spacing: -12px;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-.reg-inner { max-width: 580px; margin: 0 auto; position: relative; }
-.reg-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.reg-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.reg-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+}
 
 .reg-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(36px, 5vw, 68px);
+  font-family: var(--serif);
+  font-size: clamp(44px, 6vw, 80px);
+  font-weight: 300;
   color: var(--white);
-  letter-spacing: -2.5px;
-  line-height: 1.05;
+  line-height: 1.0;
+  letter-spacing: -2px;
   margin-bottom: 20px;
 }
 
 .reg-title em { font-style: italic; color: var(--gold); }
-.reg-sub { font-size: 19px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.75; margin-bottom: 52px; }
-.reg-form { display: flex; gap: 0; margin-bottom: 16px; }
+
+.reg-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.75;
+  margin-bottom: 52px;
+}
+
+.reg-form {
+  display: flex;
+  gap: 0;
+  margin-bottom: 14px;
+}
 
 .reg-input {
   flex: 1;
   padding: 18px 20px;
-  font-size: 19px;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--dark);
+  font-size: 15px;
+  font-family: var(--sans);
+  color: var(--ink);
   background: var(--white);
   border: none;
   outline: none;
   transition: box-shadow 0.2s;
 }
 
-.reg-input:focus { box-shadow: inset 0 -2px 0 var(--gold); }
+.reg-input:focus { box-shadow: inset 0 -3px 0 var(--gold); }
 
 .reg-btn {
-  padding: 18px 36px;
+  padding: 18px 32px;
   background: var(--gold);
   color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   border: none;
@@ -602,38 +1273,57 @@ body {
   white-space: nowrap;
 }
 
-.reg-btn:hover { background: var(--gold-light); }
-.reg-note { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.25); }
+.reg-btn:hover { background: var(--gold-l); }
+.reg-note { font-size: 12px; color: rgba(255,255,255,0.2); font-family: var(--mono); letter-spacing: 0.5px; }
 
 .reg-success {
   display: none;
   padding: 48px;
-  border: 1px solid rgba(201,168,76,0.25);
-  background: rgba(201,168,76,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
 }
 
-.reg-success-icon  { font-size: 40px; color: var(--gold); margin-bottom: 16px; }
-.reg-success-title { font-family: 'Syne', sans-serif; font-size: 32px; color: var(--white); letter-spacing: -1px; margin-bottom: 10px; }
-.reg-success-text  { font-size: 19px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.7; }
+.reg-success-icon { font-size: 36px; color: var(--gold); margin-bottom: 16px; }
+.reg-success-title { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--white); margin-bottom: 10px; }
+.reg-success-text { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.7; }
 
+/* ── FOOTER ── */
 .footer {
-  background: var(--dark);
-  border-top: 1px solid rgba(255,255,255,0.05);
+  background: var(--ink-2);
+  border-top: 1px solid rgba(255,255,255,0.06);
   padding: 28px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
-.footer-logo { font-family: 'Syne', sans-serif; font-size: 19px; color: var(--white); }
-.footer-logo span { color: var(--gold); }
-.footer-copy   { font-size: 11px; color: rgba(255,255,255,0.2); }
-.footer-author { font-size: 11px; color: rgba(255,255,255,0.2); text-align: right; line-height: 1.5; }
+.footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--white); }
+.footer-logo em { font-style: italic; color: var(--gold); }
+.footer-copy { font-family: var(--mono); font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,0.2); }
+.footer-author { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.2); text-align: right; line-height: 1.6; }
 
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-@keyframes fadeUp {
+/* ── CHAR ── */
+.hero-title .char {
+  display: inline;
+  color: rgba(10,10,10,0.1);
+  transition: color 0.4s ease;
+}
+.hero-title em .char { color: rgba(201,168,76,0.2); }
+.hero-title .char.lit { color: var(--ink); }
+.hero-title em .char.lit { color: var(--gold); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
@@ -643,185 +1333,232 @@ body {
   50% { transform: translateY(6px); }
 }
 
-@media (max-width: 900px) {
-  .hero { padding: 120px 24px 60px; }
-}
-
-@media (max-width: 640px) {
-  .header { padding: 16px 20px; }
-  .header-cta { display: none; }
-  .stat-bar { padding: 40px 24px; }
-  .stat-inner { grid-template-columns: 1fr; }
-  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 20px 0; }
-  .stat-item:last-child { border-bottom: none; }
-  .section { padding: 72px 24px; }
-  .problem-grid { grid-template-columns: 1fr; }
-  .dark-wrap { padding: 72px 24px; }
-  .documents { grid-template-columns: 1fr; }
-  .steps { grid-template-columns: 1fr; }
-  .roi-grid { grid-template-columns: 1fr; }
-  .faq-wrap { padding: 72px 24px; }
-  .buy-wrap { padding: 60px 24px; }
-  .author-wrap { padding: 60px 24px; }
-  .author-inner { flex-direction: column; gap: 24px; }
-  .reg-wrap { padding: 80px 24px; }
-  .reg-form { flex-direction: column; }
-  .footer { flex-direction: column; gap: 12px; text-align: center; }
-  .footer-author { text-align: center; }
-}
-
-/* ── PDF PREVIEW ── */
-.pdf-preview-container {
-  max-width: 560px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.pdf-preview-img {
-  width: 100%;
-  display: block;
-  border-radius: 4px;
-  transform: rotate(-1deg);
-  box-shadow:
-    0 4px 6px rgba(0,0,0,0.05),
-    0 12px 40px rgba(0,0,0,0.3),
-    0 40px 80px rgba(0,0,0,0.25);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.pdf-preview-img:hover {
-  transform: rotate(0deg) scale(1.01);
-  box-shadow:
-    0 4px 6px rgba(0,0,0,0.05),
-    0 20px 60px rgba(0,0,0,0.4),
-    0 60px 100px rgba(0,0,0,0.3);
-}
-
-.pdf-preview-badge {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: rgba(13,13,13,0.85);
-  color: var(--gold);
-  font-family: 'Syne', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 6px 12px;
-  border-radius: 4px;
-  backdrop-filter: blur(8px);
+/* ── MOBILE ── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; gap: 60px; padding-top: 100px; }
+  .hero-visual { order: -1; }
+  .data-float-1, .data-float-2 { display: none; }
 }
 
 @media (max-width: 768px) {
-  .pdf-preview-img { transform: rotate(0deg); }
+  .header { padding: 0 20px; }
+  .nav { display: none; }
+  .hero { padding: 90px 24px 40px; }
+  .stats-inner { grid-template-columns: 1fr; padding: 0 24px; }
+  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .stat-item:last-child { border-bottom: none; }
+  .section { padding: 80px 24px; }
+  .problem-inner, .solution-inner, .process-inner, .roi-inner { padding: 0 24px; }
+  .problem-grid, .docs-grid, .steps-grid, .roi-grid { grid-template-columns: 1fr; }
+  .step-card { border-right: none; border-bottom: 1px solid var(--line); }
+  .author-section { padding: 60px 24px; }
+  .author-inner { flex-direction: column; gap: 24px; }
+  .reg-section { padding: 100px 24px; }
+  .reg-form { flex-direction: column; }
+  .faq-section { padding: 80px 24px; }
+  .buy-section { padding: 60px 24px; }
+  .footer { flex-direction: column; gap: 12px; text-align: center; padding: 28px 24px; }
+  .footer-author { text-align: center; }
 }
-
-
-/* ── TICKER ── */
-.ticker-wrap {
-  background: var(--dark);
-  overflow: hidden;
-  padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.ticker-inner {
-  display: flex;
-  animation: ticker 30s linear infinite;
-  width: max-content;
-}
-
-.ticker-item {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
-  padding: 0 48px;
-  white-space: nowrap;
-}
-
-.ticker-item span { color: var(--gold); margin-right: 12px; }
-
-@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ── BIJELI TEKST NA TAMNIM POZADINAMA ── */
-.dark-wrap .section-sub,
-.dark-wrap p,
-.dark-wrap .doc-desc { color: rgba(255,255,255,0.65) !important; }
-.dark-wrap .doc-title { color: #FFFFFF !important; }
-.dark-wrap .doc-item { color: rgba(255,255,255,0.6) !important; }
-.stat-label { color: rgba(255,255,255,0.7) !important; }
-.reg-sub { color: rgba(255,255,255,0.65) !important; }
-.reg-note { color: rgba(255,255,255,0.5) !important; }
-.footer-copy, .footer-author { color: rgba(255,255,255,0.5) !important; }
-.preview-label { color: rgba(255,255,255,0.55) !important; }
-.section-label.on-dark { color: rgba(255,255,255,0.85) !important; }
-
-
-/* ── CHAR REVEAL ── */
-.hero-title .char {
-  display: inline;
-  color: rgba(13,13,13,0.12);
-  transition: color 0.4s ease;
-}
-.hero-title em .char {
-  color: rgba(201,168,76,0.2);
-}
-.hero-title .char.lit { color: var(--dark); }
-.hero-title em .char.lit { color: var(--gold); }
-
 </style>
 </head>
 <body>
 
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ARCHITECTURAL BACKGROUND -->
+<div class="arch-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Grid lines - arhitektonski -->
+    <line x1="120" y1="0" x2="120" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="360" y1="0" x2="360" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="600" y1="0" x2="600" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="840" y1="0" x2="840" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="1080" y1="0" x2="1080" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="1320" y1="0" x2="1320" y2="900" stroke="#E8E8E4" stroke-width="0.5"/>
+    
+    <line x1="0" y1="150" x2="1440" y2="150" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="0" y1="300" x2="1440" y2="300" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="0" y1="450" x2="1440" y2="450" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="0" y1="600" x2="1440" y2="600" stroke="#E8E8E4" stroke-width="0.5"/>
+    <line x1="0" y1="750" x2="1440" y2="750" stroke="#E8E8E4" stroke-width="0.5"/>
+
+    <!-- Arhitektonski luk - gornji desni ugao -->
+    <path d="M 1200 0 Q 1440 0 1440 200" stroke="#D4A84B" stroke-width="0.8" opacity="0.4"/>
+    <path d="M 1280 0 Q 1440 0 1440 280" stroke="#D4A84B" stroke-width="0.5" opacity="0.25"/>
+    <path d="M 1360 0 Q 1440 0 1440 360" stroke="#D4A84B" stroke-width="0.3" opacity="0.15"/>
+
+    <!-- Kružnica - kompas simbol -->
+    <circle cx="200" cy="600" r="180" stroke="#E2E2DC" stroke-width="0.6" opacity="0.6"/>
+    <circle cx="200" cy="600" r="120" stroke="#E2E2DC" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="200" cy="600" r="60" stroke="#D4A84B" stroke-width="0.4" opacity="0.2"/>
+    <!-- Unakrsne linije kompasa -->
+    <line x1="200" y1="420" x2="200" y2="780" stroke="#E2E2DC" stroke-width="0.5" opacity="0.5"/>
+    <line x1="20" y1="600" x2="380" y2="600" stroke="#E2E2DC" stroke-width="0.5" opacity="0.5"/>
+    <line x1="73" y1="473" x2="327" y2="727" stroke="#E2E2DC" stroke-width="0.3" opacity="0.3"/>
+    <line x1="327" y1="473" x2="73" y2="727" stroke="#E2E2DC" stroke-width="0.3" opacity="0.3"/>
+    <!-- Kompas igla -->
+    <line x1="200" y1="460" x2="200" y2="600" stroke="#D4A84B" stroke-width="0.8" opacity="0.35"/>
+    <polygon points="200,455 196,480 204,480" fill="#D4A84B" opacity="0.3"/>
+
+    <!-- Zlatni rez spirala - donji desni -->
+    <path d="M 1440 750 Q 1440 900 1290 900" stroke="#D4A84B" stroke-width="0.7" opacity="0.3"/>
+    <path d="M 1290 900 Q 1140 900 1140 800" stroke="#D4A84B" stroke-width="0.7" opacity="0.25"/>
+    <path d="M 1140 800 Q 1140 700 1210 700" stroke="#D4A84B" stroke-width="0.5" opacity="0.2"/>
+    <path d="M 1210 700 Q 1280 700 1280 745" stroke="#D4A84B" stroke-width="0.5" opacity="0.15"/>
+
+    <!-- Lenjir sa oznakama - gornji levi -->
+    <line x1="0" y1="80" x2="400" y2="80" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="0" y1="85" x2="0" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="40" y1="83" x2="40" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
+    <line x1="80" y1="85" x2="80" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="120" y1="83" x2="120" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
+    <line x1="160" y1="85" x2="160" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="200" y1="83" x2="200" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
+    <line x1="240" y1="85" x2="240" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="280" y1="83" x2="280" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
+    <line x1="320" y1="85" x2="320" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+    <line x1="360" y1="83" x2="360" y2="77" stroke="#E0E0DA" stroke-width="0.7" opacity="0.4"/>
+    <line x1="400" y1="85" x2="400" y2="75" stroke="#E0E0DA" stroke-width="1" opacity="0.5"/>
+
+    <!-- Dijagonalni element - arhitektonski crtež -->
+    <line x1="900" y1="100" x2="1100" y2="400" stroke="#E0E0DA" stroke-width="0.5" opacity="0.4"/>
+    <line x1="950" y1="100" x2="1150" y2="400" stroke="#E0E0DA" stroke-width="0.3" opacity="0.25"/>
+    <line x1="1000" y1="100" x2="1200" y2="400" stroke="#E0E0DA" stroke-width="0.3" opacity="0.2"/>
+
+    <!-- Tačke preseka - crosshair detalji -->
+    <circle cx="360" cy="300" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <circle cx="840" cy="450" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <circle cx="1080" cy="150" r="3" stroke="#D4A84B" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <line x1="357" y1="300" x2="363" y2="300" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
+    <line x1="360" y1="297" x2="360" y2="303" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
+    <line x1="837" y1="450" x2="843" y2="450" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
+    <line x1="840" y1="447" x2="840" y2="453" stroke="#D4A84B" stroke-width="0.5" opacity="0.3"/>
+  </svg>
+</div>
+
+<!-- HEADER -->
 <header class="header">
-  <div class="logo"><span>Pre</span>Forma</div>
-  <a href="#registracija" class="header-cta">Analiziraj sledećeg klijenta →</a>
+  <div class="logo">
+    <div class="logo-mark"><span>P</span></div>
+    <span><em>Pre</em>Forma</span>
+  </div>
+  <nav class="nav">
+    <a href="#section-resenje" class="nav-link">Rešenje</a>
+    <a href="#section-proces" class="nav-link">Proces</a>
+    <a href="#faq" class="nav-link">FAQ</a>
+    <a href="#registracija" class="nav-cta">Besplatno →</a>
+  </nav>
 </header>
 
 <!-- HERO -->
-<div style="background:var(--bg)">
+<div style="position:relative;z-index:1;background:var(--white)">
 <div class="hero">
-  <div>
-    <div class="hero-label">Sistem upravljanja projektima &middot; Za arhitekte i dizajnere enterijera</div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Za arhitekte i dizajnere enterijera</div>
     <h1 class="hero-title">
-      Projektna inteligencija.<br>
-      Pre <em>prvog sastanka.</em>
+      Projektna<br>
+      inteligencija<br>
+      pre <em>prvog</em><br>
+      <strong>sastanka.</strong>
     </h1>
-    <p class="hero-sub">
-      Većina projektnih problema predvidiva je pre prvog sastanka. PreForma pretvara rizik klijenta u projektnu kontrolu — generišući kompletan operativni sistem za vaš sledeći projekat: granice scopea, protokol komunikacije i ugovorna zaštita usklađeni sa tim kako vaš klijent stvarno funkcioniše.
+    <p class="hero-body">
+      Većina projektnih katastrofa predvidiva je pre nego što projekat počne. PreForma analizira behavioralni profil klijenta i automatski generiše pet operativnih dokumenata — prilagođenih upravo toj osobi.
     </p>
     <div class="hero-actions">
       <a href="#registracija" class="btn-primary">
-        Analiziraj sledećeg klijenta
-        <span class="btn-arrow">→</span>
+        <span>Analiziraj sledećeg klijenta →</span>
       </a>
-      <span class="hero-note">Prvi izveštaj besplatno</span>
+      <a href="#section-resenje" class="btn-ghost">Saznaj više</a>
     </div>
-    <a href="#section-problem" class="scroll-hint">
-      Saznaj više
-      <span class="scroll-arrow">↓</span>
-    </a>
+  </div>
+  <div class="hero-visual">
+    <div class="data-float data-float-1">
+      <div class="data-float-num">6</div>
+      <div class="data-float-label">profila klijenata</div>
+    </div>
+    <div class="hero-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-badge">PreForma · Izvršni rezime</div>
+          <div class="card-name">Ana Marković</div>
+        </div>
+        <div class="card-profile">Vizionar / Kreativac</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-meta-item">
+          <div class="card-meta-label">Ukupni rizik</div>
+          <div class="card-meta-val danger">VISOK</div>
+        </div>
+        <div class="card-meta-item">
+          <div class="card-meta-label">Prognoza</div>
+          <div class="card-meta-val warn">+30% vremena</div>
+        </div>
+        <div class="card-meta-item">
+          <div class="card-meta-label">Pouzdanost</div>
+          <div class="card-meta-val safe">VISOKA</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="risk-row">
+          <div class="risk-label">Scope creep rizik</div>
+          <div class="risk-track"><div class="risk-fill h" data-w="82"></div></div>
+          <div class="risk-pct h">82%</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label">Česte izmene</div>
+          <div class="risk-track"><div class="risk-fill h" data-w="74"></div></div>
+          <div class="risk-pct h">74%</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label">Kašnjenje odluka</div>
+          <div class="risk-track"><div class="risk-fill m" data-w="51"></div></div>
+          <div class="risk-pct m">51%</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label">Rizik primopredaje</div>
+          <div class="risk-track"><div class="risk-fill m" data-w="44"></div></div>
+          <div class="risk-pct m">44%</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label">Komunikacijski konflikt</div>
+          <div class="risk-track"><div class="risk-fill l" data-w="21"></div></div>
+          <div class="risk-pct l">21%</div>
+        </div>
+        <div class="card-tags">
+          <div class="card-tag">Scope Protection</div>
+          <div class="card-tag">Phase-lock</div>
+          <div class="card-tag">Revision Limit</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-footer-label">PreForma · psihotrot@gmail.com</div>
+        <div class="card-footer-label">Izveštaj v5</div>
+      </div>
+    </div>
+    <div class="data-float data-float-2">
+      <div class="data-float-num">5</div>
+      <div class="data-float-label">dokumenata odmah</div>
+    </div>
   </div>
 </div>
 </div>
 
-<!-- STAT BAR -->
-<div class="stat-bar">
-  <div class="stat-inner">
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
     <div class="stat-item">
-      <div class="stat-num" data-target="68" data-suffix="%">68%</div>
+      <span class="stat-num" data-target="68" data-suffix="%">68%</span>
       <div class="stat-label">projekata kasni zbog<br>neusklađene komunikacije</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num" data-target="3" data-suffix="×">3×</div>
+      <span class="stat-num" data-target="3" data-suffix="×">3×</span>
       <div class="stat-label">više revizija nego što<br>je ugovorom predviđeno</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num" data-target="40" data-suffix="%">40%</div>
+      <span class="stat-num" data-target="40" data-suffix="%">40%</span>
       <div class="stat-label">honorara nestaje u<br>neplaćenom prekovremenom radu</div>
     </div>
   </div>
@@ -830,291 +1567,256 @@ body {
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-inner">
-    <div class="ticker-item">Scope Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Revision Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Contract Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Project Control<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Before the First Meeting<span class="ticker-dot"></span></div>
-    <div class="ticker-item">No More Scope Creep<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Scope Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Revision Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Contract Protection<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Project Control<span class="ticker-dot"></span></div>
-    <div class="ticker-item">Before the First Meeting<span class="ticker-dot"></span></div>
-    <div class="ticker-item">No More Scope Creep<span class="ticker-dot"></span></div>
+    <div class="ticker-item">Izvršni rezime <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Profil klijenta <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Ekspertsko tumačenje <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Scope of Work <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Ugovor prilagođen profilu <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Automatska isporuka <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Izvršni rezime <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Profil klijenta <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Ekspertsko tumačenje <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Scope of Work <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Ugovor prilagođen profilu <div class="ticker-dot"></div></div>
+    <div class="ticker-item">Automatska isporuka <div class="ticker-dot"></div></div>
   </div>
 </div>
 
 <!-- PROBLEM -->
-<section class="section reveal" id="section-problem">
-  <div class="section-label">Prepoznajete li ovo</div>
-  <h2 class="section-title">Niste izgubili projekat.<br>Izgubili ste <em>kontrolu nad njim.</em></h2>
-  <div class="problem-grid">
-    <div class="problem-item">
-      <div class="problem-quote">"Možemo li još jednom da pogledamo konceptualnu fazu? Imam neke nove ideje."</div>
-      <div class="problem-result">Projekat koji je trebalo da traje 3 meseca traje 7. Honorar ostaje isti.</div>
-    </div>
-    <div class="problem-item">
-      <div class="problem-quote">"Sve mi se sviđa, ali hajde da vidimo još jednu varijantu pre nego što odlučimo."</div>
-      <div class="problem-result">12 prezentacija. Isti honorar kao za 3. Ista energija kao za 20.</div>
-    </div>
-    <div class="problem-item">
-      <div class="problem-quote">"Pozvao sam i ženu da vidi — ona ima neka pitanja koja bi volela da vam postavi."</div>
-      <div class="problem-result">Projekat se restartuje. Vi plaćate cenu. Niko nije najavio da će se to desiti.</div>
-    </div>
-  </div>
-</section>
-
-<!-- REŠENJE -->
-<div class="dark-wrap">
-  <div class="dark-inner reveal">
-    <div class="section-label on-dark">Rešenje</div>
-    <h2 class="section-title on-dark">Pet dokumenata.<br><em>Kompletna strategija.</em></h2>
-    <p class="section-sub on-dark">Klijent popunjava kratak upitnik. Vi automatski dobijate svih 5 dokumenata — od rezimea do ugovora — sve što vam treba da vodite projekat od prvog sastanka do primopredaje — prilagođeno tipu projekta i operativnom profilu tog klijenta.</p>
-
-    <div class="documents">
-      <div class="document featured">
-        <div class="doc-num">00</div>
-        <div class="doc-title">Izvršni rezime</div>
-        <div class="doc-desc">Jedna stranica sa ključnim uvidima — pročitajte pre prvog sastanka. Profil u jednoj rečenici, top 3 signala rizika, tri stvari koje nikad ne radite i protokol u slučaju konflikta.</div>
-        <div class="doc-list">
-          <div class="doc-item">Profil klijenta u jednoj rečenici</div>
-          <div class="doc-item">Top 3 signala rizika sa procentima</div>
-          <div class="doc-item">Tri stvari koje nikad ne radite sa ovim klijentom</div>
-          <div class="doc-item">Protokol u slučaju konflikta</div>
-        </div>
+<div class="problem-section">
+  <div class="problem-inner reveal">
+    <div class="section-tag">Prepoznajete li ovo</div>
+    <h2 class="section-title">Niste izgubili projekat.<br>Izgubili ste <em>kontrolu.</em></h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-num">01</div>
+        <div class="problem-quote">"Možemo li još jednom da pogledamo konceptualnu fazu? Imam neke nove ideje."</div>
+        <div class="problem-result">Projekat koji je trebalo da traje 3 meseca traje 7. Honorar ostaje isti.</div>
       </div>
-      <div class="document">
-        <div class="doc-num">01</div>
-        <div class="doc-title">Profil klijenta</div>
-        <div class="doc-desc">Operativni profil koji otkriva kako klijent stvarno funkcioniše u projektnom procesu — stil donošenja odluka, tolerancija na neizvesnost, potreba za kontrolom.</div>
-        <div class="doc-list">
-          <div class="doc-item">Stil donošenja odluka i brzina reakcije</div>
-          <div class="doc-item">Nivo potrebe za kontrolom procesa</div>
-          <div class="doc-item">Tolerancija na promene i kašnjenja</div>
-          <div class="doc-item">Mapa operativnih rizika po fazama</div>
-        </div>
+      <div class="problem-card">
+        <div class="problem-num">02</div>
+        <div class="problem-quote">"Sve mi se sviđa, ali hajde da vidimo još jednu varijantu pre nego što odlučimo."</div>
+        <div class="problem-result">12 prezentacija. Isti honorar kao za 3. Ista energija kao za 20.</div>
       </div>
-      <div class="document">
-        <div class="doc-num">02</div>
-        <div class="doc-title">Ekspertsko tumačenje</div>
-        <div class="doc-desc">Konkretne smernice kako voditi ovog klijenta kroz svaku fazu projekta — kako postavljati granice, kako prezentovati opcije, gde su kritični momenti.</div>
-        <div class="doc-list">
-          <div class="doc-item">Kako postavljati granice bez konflikta</div>
-          <div class="doc-item">Kako prezentovati opcije ovom profilu</div>
-          <div class="doc-item">Gde su kritični momenti projekta</div>
-          <div class="doc-item">Estetski jezik koji ovaj klijent razume</div>
-        </div>
-      </div>
-      <div class="document featured">
-        <div class="doc-num">03</div>
-        <div class="doc-title">Scope of Work</div>
-        <div class="doc-desc">Predlog ugovora o obimu usluga prilagođen tipu projekta i profilu klijenta — sa fazama, rokovima i klauzulama koje štite od specifičnih rizika.</div>
-        <div class="doc-list">
-          <div class="doc-item">Faze i rokovi prilagođeni tipu projekta</div>
-          <div class="doc-item">Jasno šta je uključeno, šta nije</div>
-          <div class="doc-item">Broj revizija prilagođen rizičnom profilu</div>
-          <div class="doc-item">Obaveze klijenta i rokovi za odgovor</div>
-        </div>
-      </div>
-      <div class="document">
-        <div class="doc-num">04</div>
-        <div class="doc-title">Ugovor prilagođen profilu</div>
-        <div class="doc-desc">Ugovor sa klauzulama koje štite od specifičnih rizika ovog klijenta — ne generički šablon, nego dokument skrojen za ovaj tip saradnje.</div>
-        <div class="doc-list">
-          <div class="doc-item">Klauzule za zaštitu od beskonačnih izmena</div>
-          <div class="doc-item">Phase-lock sistem prilagođen profilu</div>
-          <div class="doc-item">Protokol komunikacije i odgovornosti</div>
-          <div class="doc-item">Milestone plaćanja po fazama projekta</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="preview-wrap">
-      <div class="preview-label">Primer generisanog izveštaja</div>
-      <div class="pdf-preview-container">
-        <img
-          src="preforma_rezime_preview_web.png"
-          alt="PreForma Izvrsni rezime — primer izveštaja"
-          class="pdf-preview-img"
-          loading="lazy"
-        />
-        <div class="pdf-preview-badge">Izvrsni rezime · 1 stranica</div>
+      <div class="problem-card">
+        <div class="problem-num">03</div>
+        <div class="problem-quote">"Pozvao sam i ženu da vidi — ona ima neka pitanja koja bi volela da vam postavi."</div>
+        <div class="problem-result">Projekat se restartuje. Vi plaćate cenu. Niko nije najavio da će se to desiti.</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PROCES -->
-<section class="section reveal">
-  <div class="section-label">Kako funkcioniše</div>
-  <h2 class="section-title">Tri koraka.<br><em>Sve je automatski.</em></h2>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Pošaljite link klijentu</div>
-      <div class="step-desc">Dobijate personalizovani link koji šaljete klijentu pre prvog sastanka. Upitnik traje 3–4 minuta i formulisan je kao standardni projektni intake — bez psihološkog žargona.</div>
+<!-- SOLUTION -->
+<div class="solution-section" id="section-resenje">
+  <div class="solution-inner reveal">
+    <div class="section-tag">Rešenje</div>
+    <h2 class="section-title">Pet dokumenata.<br><em>Kompletna strategija.</em></h2>
+    <p class="section-sub">Klijent popunjava kratak upitnik. Vi automatski dobijate sve što vam treba da vodite projekat — prilagođeno profilu tog klijenta.</p>
+
+    <div class="docs-grid">
+      <div class="doc-card featured">
+        <div class="doc-card-label">
+          <span>00</span> · Izvršni rezime
+        </div>
+        <div class="doc-card-num">00</div>
+        <div class="doc-card-title">Izvršni rezime</div>
+        <div class="doc-card-desc">Jedna stranica — pročitajte pre prvog sastanka. Sve što trebate za 60 sekundi.</div>
+        <div class="doc-list">
+          <div class="doc-item"><span class="doc-arrow">→</span>Profil klijenta u jednoj rečenici</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Top 3 signala rizika sa procentima</div>
+          <div class="doc-item doc-item highlight"><span class="doc-arrow">→</span>Tri stvari koje nikad ne radite sa ovim klijentom</div>
+          <div class="doc-item highlight"><span class="doc-arrow">→</span>Protokol u slučaju konflikta</div>
+        </div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-label"><span>01</span> · Profil klijenta</div>
+        <div class="doc-card-num">01</div>
+        <div class="doc-card-title">Profil klijenta</div>
+        <div class="doc-card-desc">Operativni profil koji otkriva kako klijent stvarno funkcioniše u projektnom procesu.</div>
+        <div class="doc-list">
+          <div class="doc-item"><span class="doc-arrow">→</span>Stil donošenja odluka i brzina reakcije</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Tolerancija na promene i kašnjenja</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Mapa operativnih rizika po fazama</div>
+        </div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-label"><span>02</span> · Ekspertsko tumačenje</div>
+        <div class="doc-card-num">02</div>
+        <div class="doc-card-title">Ekspertsko tumačenje</div>
+        <div class="doc-card-desc">Konkretne smernice kako voditi ovog klijenta kroz svaku fazu projekta.</div>
+        <div class="doc-list">
+          <div class="doc-item"><span class="doc-arrow">→</span>Kako postavljati granice bez konflikta</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Gde su kritični momenti projekta</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Estetski jezik koji ovaj klijent razume</div>
+        </div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-label"><span>03</span> · Scope of Work</div>
+        <div class="doc-card-num">03</div>
+        <div class="doc-card-title">Scope of Work</div>
+        <div class="doc-card-desc">Predlog ugovora o obimu usluga prilagođen tipu projekta i profilu klijenta.</div>
+        <div class="doc-list">
+          <div class="doc-item"><span class="doc-arrow">→</span>Faze i rokovi prilagođeni tipu projekta</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Broj revizija prilagođen rizičnom profilu</div>
+          <div class="doc-item"><span class="doc-arrow">→</span>Obaveze klijenta i rokovi za odgovor</div>
+        </div>
+      </div>
     </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Sistem analizira obrasce</div>
-      <div class="step-desc">Sistem prepoznaje obrasce saradnje, komunikacije i donošenja odluka relevantne za tok projekta — i mapira ih na operativni profil specifičan za taj tip projekta i skalu.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Dobijate 5 dokumenata</div>
-      <div class="step-desc">Automatski, za nekoliko minuta, direktno na vaš email. Ulazite na prvi sastanak sa kompletnom strategijom — rezime, profil, tumačenje, scope i ugovor prilagođen tom klijentu.</div>
+
+    <div class="pdf-preview-wrap">
+      <div class="pdf-preview-label">Primer generisanog izvršnog rezimea</div>
+      <div class="pdf-preview-container">
+        <img src="preforma_rezime_preview_web.png" alt="PreForma Izvršni rezime" class="pdf-preview-img" loading="lazy"/>
+        <div class="pdf-badge">Izvršni rezime · 1 stranica</div>
+      </div>
     </div>
   </div>
-</section>
+</div>
+
+<!-- PROCESS -->
+<div class="process-section" id="section-proces">
+  <div class="process-inner reveal">
+    <div class="section-tag">Kako funkcioniše</div>
+    <h2 class="section-title">Tri koraka.<br><em>Sve automatski.</em></h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Pošaljite link klijentu</div>
+        <div class="step-desc">Dobijate personalizovani link koji šaljete klijentu pre prvog sastanka. Upitnik traje 3–4 minuta — izgleda kao standardni projektni intake, bez psihološkog žargona.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Sistem analizira obrasce</div>
+        <div class="step-desc">Sistem prepoznaje obrasce saradnje, komunikacije i donošenja odluka relevantne za tok projekta i mapira ih na operativni profil specifičan za taj tip projekta.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Dobijate 5 dokumenata</div>
+        <div class="step-desc">Automatski, za nekoliko minuta, direktno na vaš email. Ulazite na prvi sastanak sa kompletnom strategijom — rezime, profil, tumačenje, scope i ugovor.</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ROI -->
-<section class="section reveal" style="padding-top:0">
-  <div class="section-label">Zašto arhitekte koriste PreFormu?</div>
-  <h2 class="section-title">Svaki projekat<br>ima svoju <em>cenu haosa.</em></h2>
-  <div class="roi-grid">
-    <div class="roi-item">
-      <div class="roi-num">−</div>
-      <div class="roi-content">
-        <div class="roi-title">Manje neplaćenih revizija</div>
-        <div class="roi-desc">Znate unapred koliko revizija ovaj klijent zahteva. Ugovor to ograničava pre nego što problem nastane.</div>
+<div class="roi-section">
+  <div class="roi-inner reveal">
+    <div class="section-tag">Zašto arhitekte koriste PreFormu</div>
+    <h2 class="section-title">Svaki projekat<br>ima svoju <em>cenu haosa.</em></h2>
+    <div class="roi-grid">
+      <div class="roi-card">
+        <div class="roi-icon">−</div>
+        <div>
+          <div class="roi-title">Manje neplaćenih revizija</div>
+          <div class="roi-desc">Znate unapred koliko revizija ovaj klijent zahteva. Ugovor to ograničava pre nego što problem nastane.</div>
+        </div>
       </div>
-    </div>
-    <div class="roi-item">
-      <div class="roi-num">−</div>
-      <div class="roi-content">
-        <div class="roi-title">Manje iznenađenja na projektu</div>
-        <div class="roi-desc">Scope creep, stakeholder konflikti i promene odluka — predvidivi su pre prvog sastanka.</div>
+      <div class="roi-card">
+        <div class="roi-icon">−</div>
+        <div>
+          <div class="roi-title">Manje iznenađenja na projektu</div>
+          <div class="roi-desc">Scope creep, stakeholder konflikti i promene odluka — predvidivi su pre prvog sastanka.</div>
+        </div>
       </div>
-    </div>
-    <div class="roi-item">
-      <div class="roi-num">+</div>
-      <div class="roi-content">
-        <div class="roi-title">Više kontrole nad procesom</div>
-        <div class="roi-desc">Znate kako komunicirati sa ovim klijentom, kako prezentovati i kada zaključati fazu — od prvog dana.</div>
+      <div class="roi-card">
+        <div class="roi-icon">+</div>
+        <div>
+          <div class="roi-title">Više kontrole nad procesom</div>
+          <div class="roi-desc">Znate kako komunicirati, kako prezentovati i kada zaključati fazu — od prvog dana.</div>
+        </div>
       </div>
-    </div>
-    <div class="roi-item">
-      <div class="roi-num">+</div>
-      <div class="roi-content">
-        <div class="roi-title">Ugovor koji štiti vaš rad</div>
-        <div class="roi-desc">Ne generički šablon — ugovor skrojen za rizike ovog konkretnog klijenta i tipa projekta.</div>
+      <div class="roi-card">
+        <div class="roi-icon">+</div>
+        <div>
+          <div class="roi-title">Ugovor koji štiti vaš rad</div>
+          <div class="roi-desc">Ne generički šablon — ugovor skrojen za rizike ovog konkretnog klijenta i tipa projekta.</div>
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- BUY CTA -->
-<div class="buy-wrap reveal">
+<div class="buy-section reveal">
   <a href="https://preforma.lemonsqueezy.com/checkout/buy/acae2b31-9fbc-4295-a2bb-08e48de8724e" class="buy-btn">
-    Aktiviraj PreFormu &nbsp;→
+    <span>Aktiviraj PreFormu →</span>
   </a>
   <p class="buy-sub">5 izveštaja u paketu · Prvi je besplatan</p>
   <p class="buy-pay">Plaćanje karticom, PayPal, Apple Pay ili Google Pay</p>
 </div>
 
 <!-- FAQ -->
-<div class="faq-wrap reveal">
+<div class="faq-section reveal" id="faq">
   <div class="faq-inner">
-    <div class="section-label">Pitanja</div>
+    <div class="section-tag">Pitanja</div>
     <h2 class="section-title" style="margin-bottom:48px">Nije psihološki test.<br><em>Projektni alat.</em></h2>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Da li je ovo samo još jedan psihološki test?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Ne. PreForma nije psihološka procena. Sistem analizira obrasce saradnje, komunikacione stilove i obrasce donošenja odluka koji direktno utiču na tok projekta — koliko revizija klijent obično zahteva, koliko brzo donosi odluke, koliko nadzora mu treba. Rezultat je operativan, ne klinički.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Da li je ovo samo još jedan psihološki test? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Ne. PreForma nije psihološka procena. Sistem analizira obrasce saradnje, komunikacione stilove i obrasce donošenja odluka koji direktno utiču na tok projekta. Rezultat je operativan, ne klinički.</div>
     </div>
-
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Da li klijent zna da se analizira?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Upitnik je formulisan kao standardni projektni intake — pitanja o tome kako klijent pristupa odlukama, šta mu je najvažnije u projektu i kako preferira da komunicira. Sistem prepoznaje obrasce saradnje relevantne za projekat. Nema obmane, a pitanja su potpuno prikladna za svaki profesionalni onboarding proces.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Da li klijent zna da se analizira? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Upitnik je formulisan kao standardni projektni intake. Nema obmane — pitanja su potpuno prikladna za svaki profesionalni onboarding proces.</div>
     </div>
-
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Koliko dugo traje upitnik?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">3 do 4 minuta. Dizajniran je da bude lak za klijenta — bez psihološkog žargona, bez komplikovanih skala. Samo jasna pitanja o projektnim preferencijama i stilu rada.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Koliko dugo traje upitnik? <span class="faq-icon">+</span></div>
+      <div class="faq-a">3 do 4 minuta. Dizajniran je da bude lak za klijenta — bez psihološkog žargona, bez komplikovanih skala.</div>
     </div>
-
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Šta tačno dobijam?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Pet PDF dokumenata isporučena na vaš email automatski: Izvršni rezime sa ključnim uvidima, Profil klijenta sa mapom operativnih rizika, Ekspertsko tumačenje sa konkretnim smernicama za vođenje ovog klijenta, Adaptive Scope prilagođen tipu projekta i Ugovor sa klauzulama skrojenim za rizike ovog klijenta.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Šta tačno dobijam? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Pet PDF dokumenata isporučena na vaš email automatski: Izvršni rezime, Profil klijenta, Ekspertsko tumačenje, Adaptive Scope i Ugovor sa klauzulama skrojenim za rizike ovog klijenta.</div>
     </div>
-
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Koliko je tačno?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Sistem sadrži indikator pouzdanosti koji pokazuje koliko je jasno definisan profil klijenta. Kada odgovori jasno ukazuju u jednom pravcu, pouzdanost je visoka. Kada su obrasci mešovitiji, izveštaj to eksplicitno označava i preporučuje proveru pretpostavki u razgovoru. PreForma je alat za podršku odlučivanju — daje vam značajnu prednost, ali ne garantuje tok projekta.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Kako funkcioniše sistem kredita? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Svaki popunjen upitnik troši jedan kredit i generiše kompletnih 5 dokumenata. Registracijom dobijate jedan besplatni kredit.</div>
     </div>
-
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Mogu li da koristim PreFormu za različite tipove projekata?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Da. PreForma se prilagođava na 10 tipova projekata — od stambenog enterijera do hospitality, komercijalnih prostora, design &amp; build i luksuznih projekata. Scope dokument, procena rizika i ugovorne klauzule se menjaju u skladu sa tipom projekta i skalom koji klijent odabere u upitniku.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Kako funkcioniše sistem kredita?
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-a">Svaki popunjen upitnik troši jedan kredit i generiše kompletnih 5 dokumenata za tog klijenta. Registracijom dobijate jedan besplatni kredit — dovoljno da vidite kako sistem funkcioniše na realnom klijentu pre nego što kupite paket.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Mogu li da koristim PreFormu za različite tipove projekata? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Da. PreForma se prilagođava na 10 tipova projekata — od stambenog enterijera do hospitality, komercijalnih prostora i luksuznih projekata.</div>
     </div>
   </div>
 </div>
 
 <!-- AUTHOR -->
-<div class="author-wrap reveal">
+<div class="author-section reveal">
   <div class="author-inner">
-    <div class="author-line"></div>
+    <div class="author-accent"></div>
     <div>
       <div class="author-name">Sava Pivnički</div>
-      <div class="author-title">Diplomirani psiholog &middot; Spec. psihologije prostora i komunikacije</div>
-      <p class="author-text">PreForma je nastala na intersekciji psihologije odlučivanja i projektne prakse u arhitekturi. Sistem je razvijen u saradnji sa arhitektama i dizajnerima koji su ga koristili na realnim projektima — i koji su potvrdili da razlika između uspešnog i problematičnog projekta najčešće nije u dizajnu, nego u tome ko sedi nasuprot vas. PreForma to otkriva pre nego što projekat počne.</p>
+      <div class="author-title">Diplomirani psiholog · Psihologija prostora i komunikacije</div>
+      <p class="author-text">Razvio sam PreFormu jer sam video isti scenario ponavljati previše puta — sjajan projekat, iskusan dizajner, i klijent koji sve to sruši. Ne zbog dizajna. Zbog toga ko seda nasuprot vas. PreForma to otkriva pre nego što projekat počne.</p>
     </div>
   </div>
 </div>
 
-<!-- REGISTRACIJA -->
-<div class="reg-wrap" id="registracija">
+<!-- REGISTRATION -->
+<div class="reg-section" id="registracija">
   <div class="reg-inner reveal">
-    <div class="reg-label">Besplatan pristup</div>
+    <div class="reg-tag">Besplatan pristup</div>
     <h2 class="reg-title">Preuzmite<br><em>kontrolu.</em></h2>
-    <p class="reg-sub">Unesite email i dobijate personalizovani link odmah. Analizirajte sledećeg klijenta pre prvog sastanka, ili sami popunite upitnik iz pozicije klijenta — prvi izveštaj je potpuno besplatan.</p>
+    <p class="reg-sub">Unesite email i dobijate personalizovani link odmah. Analizirajte sledećeg klijenta pre prvog sastanka — prvi izveštaj je potpuno besplatan.</p>
 
     <div id="regForm">
       <div class="reg-form">
         <input type="email" class="reg-input" id="regEmail" placeholder="vas-email@email.com">
-        <button class="reg-btn" id="regBtn">Analiziraj klijenta →</button>
+        <button class="reg-btn" id="regBtn">Analiziraj →</button>
       </div>
-      <p class="reg-note">Bez kreditne kartice &middot; Bez obaveza &middot; Odjava u svakom trenutku</p>
+      <p class="reg-note">Bez kreditne kartice · Bez obaveza · Odjava u svakom trenutku</p>
     </div>
 
     <div class="reg-success" id="regSuccess">
       <div class="reg-success-icon">✓</div>
       <div class="reg-success-title">Proverite email</div>
-      <div class="reg-success-text">Vaš personalizovani link je na putu.<br>Stiže Vam za nekoliko sekundi.</div>
+      <div class="reg-success-text">Vaš personalizovani link je na putu.<br>Stiže za nekoliko sekundi.</div>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-logo"><span>Pre</span>Forma</div>
+  <div class="footer-logo"><em>Pre</em>Forma</div>
   <div class="footer-copy">Where design starts with understanding</div>
   <div class="footer-author">Sava Pivnički<br>psihotrot@gmail.com</div>
 </footer>
@@ -1122,56 +1824,63 @@ body {
 <script>
 var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwyyqD6x9R77lJ3BuOX2M5gmw8ugfLR9D7KF3RCEoWafP6X9O45Itxc4830_KpaFkmC8Q/exec';
 
-document.getElementById('regBtn').addEventListener('click', function() {
-  var email = document.getElementById('regEmail').value.trim();
-  if (!email || email.indexOf('@') === -1) {
-    document.getElementById('regEmail').style.boxShadow = 'inset 0 -2px 0 #D85A30';
-    return;
+// ── CUSTOM CURSOR ──
+(function() {
+  var cursor = document.getElementById('cursor');
+  var ring = document.getElementById('cursorRing');
+  var mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateRing);
   }
-  document.getElementById('regEmail').style.boxShadow = '';
-  document.getElementById('regBtn').textContent = 'Šaljem...';
-  document.getElementById('regBtn').disabled = true;
-
-  fetch(WEB_APP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ tip: 'registracija', email: email })
-  }).then(function() {
-    document.getElementById('regForm').style.display = 'none';
-    document.getElementById('regSuccess').style.display = 'block';
-  }).catch(function() {
-    document.getElementById('regForm').style.display = 'none';
-    document.getElementById('regSuccess').style.display = 'block';
+  animateRing();
+  document.querySelectorAll('a, button, .faq-q').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      cursor.style.width = '4px';
+      cursor.style.height = '4px';
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+      ring.style.opacity = '0.8';
+    });
+    el.addEventListener('mouseleave', function() {
+      cursor.style.width = '8px';
+      cursor.style.height = '8px';
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+      ring.style.opacity = '0.5';
+    });
   });
-});
+})();
 
-document.getElementById('regEmail').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') document.getElementById('regBtn').click();
-});
+// ── RISK BAR ANIMACIJA ──
+(function() {
+  var card = document.querySelector('.hero-card');
+  if (!card) return;
+  var animated = false;
+  function animateBars() {
+    if (animated) return;
+    animated = true;
+    document.querySelectorAll('.risk-fill[data-w]').forEach(function(el, i) {
+      setTimeout(function() {
+        el.style.width = el.dataset.w + '%';
+      }, i * 150 + 400);
+    });
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { animateBars(); obs.unobserve(e.target); } });
+  }, { threshold: 0.3 });
+  obs.observe(card);
+})();
 
-function toggleFaq(el) {
-  var item = el.parentElement;
-  var isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-  if (!isOpen) item.classList.add('open');
-}
-
-var observer = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.08 });
-
-document.querySelectorAll('.reveal').forEach(function(el) {
-  observer.observe(el);
-});
-
-
-// ── COUNTUP NA STAT BROJEVIMA ──
+// ── COUNTUP ──
 (function() {
   function countUp(el) {
     var target = parseFloat(el.dataset.target);
@@ -1179,7 +1888,7 @@ document.querySelectorAll('.reveal').forEach(function(el) {
     var start = null;
     function step(ts) {
       if (!start) start = ts;
-      var p = Math.min((ts - start) / 1400, 1);
+      var p = Math.min((ts - start) / 1600, 1);
       el.textContent = Math.round((1 - Math.pow(1 - p, 4)) * target) + suffix;
       if (p < 1) requestAnimationFrame(step);
     }
@@ -1191,11 +1900,10 @@ document.querySelectorAll('.reveal').forEach(function(el) {
   document.querySelectorAll('.stat-num[data-target]').forEach(function(el) { obs.observe(el); });
 })();
 
-// ── CHAR REVEAL NA HERO NASLOVU ──
+// ── CHAR REVEAL ──
 (function() {
   var titleEl = document.querySelector('.hero-title');
   if (!titleEl) return;
-
   function wrapChars(node) {
     if (node.nodeType === Node.TEXT_NODE) {
       var frag = document.createDocumentFragment();
@@ -1210,15 +1918,58 @@ document.querySelectorAll('.reveal').forEach(function(el) {
       Array.from(node.childNodes).forEach(wrapChars);
     }
   }
-
   Array.from(titleEl.childNodes).forEach(wrapChars);
-
   var chars = Array.from(titleEl.querySelectorAll('.char'));
   chars.forEach(function(ch, i) {
-    setTimeout(function() { ch.classList.add('lit'); }, 40 + i * 28);
+    setTimeout(function() { ch.classList.add('lit'); }, 200 + i * 22);
   });
 })();
 
+// ── REVEAL ──
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+// ── FAQ ──
+function toggleFaq(el) {
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── REGISTRACIJA ──
+document.getElementById('regBtn').addEventListener('click', function() {
+  var email = document.getElementById('regEmail').value.trim();
+  if (!email || email.indexOf('@') === -1) {
+    document.getElementById('regEmail').style.boxShadow = 'inset 0 -3px 0 #E05A3A';
+    return;
+  }
+  document.getElementById('regEmail').style.boxShadow = '';
+  document.getElementById('regBtn').textContent = 'Šaljem...';
+  document.getElementById('regBtn').disabled = true;
+  fetch(WEB_APP_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ tip: 'registracija', email: email })
+  }).then(function() {
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('regSuccess').style.display = 'block';
+  }).catch(function() {
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('regSuccess').style.display = 'block';
+  });
+});
+
+document.getElementById('regEmail').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('regBtn').click();
+});
 </script>
 </body>
 </html>
