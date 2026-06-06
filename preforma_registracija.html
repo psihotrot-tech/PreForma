@@ -887,6 +887,44 @@ html, body {
   box-sizing: border-box;
 }
 
+
+/* ── SVEOBUHVATNI MOBILE FIX ── */
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+.dark-inner,
+.stat-inner {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 72px 20px !important; }
+  .dark-wrap { padding: 72px 20px !important; }
+  .reg-wrap { padding: 80px 20px !important; }
+  .faq-wrap { padding: 72px 20px !important; }
+  .author-wrap { padding: 60px 20px !important; }
+  .buy-wrap { padding: 60px 20px !important; }
+  .stat-bar { padding: 40px 20px !important; }
+  .header { padding: 16px 20px !important; }
+  .footer { padding: 24px 20px !important; }
+  .copyright-bar { padding: 12px 20px !important; }
+  
+  .hero { padding: 110px 20px 60px !important; }
+  .hero-sub { width: 100% !important; max-width: 100% !important; }
+  
+  .dark-inner { padding: 0 !important; width: 100% !important; }
+  .stat-inner { padding: 0 !important; }
+  
+  .mockup-risk-label { width: 100px !important; }
+  
+  .author-inner { padding: 0 !important; }
+}
+
 </style>
 </head>
 <body>
