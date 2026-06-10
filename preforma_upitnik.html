@@ -21,84 +21,97 @@ html, body { width: 100%; max-width: 100vw; overflow-x: hidden; }
 .logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; text-decoration: none; }
 .logo span { color: var(--gold); }
 .header-tag { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--soft); }
-.header-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--white); background: var(--dark); text-decoration: none; padding: 10px 22px; transition: background 0.3s; }
-.header-cta:hover { background: var(--gold); }
 
 /* HERO */
-.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 48px 80px; position: relative; overflow: hidden; text-align: center; }
-.hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events: none; }
-.hero::after { content: ''; position: absolute; bottom: -100px; left: -100px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%); pointer-events: none; }
-.hero-label { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
-.hero-title { font-family: 'Syne', sans-serif; font-size: clamp(36px, 5.5vw, 72px); font-weight: 800; color: var(--dark); line-height: 1.05; letter-spacing: -3px; max-width: 700px; margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+.hero { padding: 140px 48px 48px; text-align: center; position: relative; overflow: hidden; max-width: 760px; margin: 0 auto; }
+.hero::before { content: ''; position: absolute; top: -100px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; }
+.hero-label { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards; }
+.hero-title { font-family: 'Syne', sans-serif; font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; color: var(--dark); line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
 .hero-title em { font-style: italic; color: var(--gold); }
-.hero-sub { font-size: 18px; font-weight: 300; color: var(--mid); max-width: 480px; line-height: 1.75; margin-bottom: 52px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
-.btn-primary { display: inline-flex; align-items: center; gap: 12px; background: var(--dark); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; padding: 18px 40px; border: none; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
-.btn-primary::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--gold); transition: width 0.3s ease; }
-.btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.3); }
-.btn-primary:hover::before { width: 0; }
+.hero-sub { font-size: 17px; font-weight: 300; color: var(--mid); max-width: 480px; margin: 0 auto 40px; line-height: 1.75; opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards; }
+
+/* PROGRESS */
+.progress-outer { max-width: 680px; margin: 0 auto 32px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+.progress-meta { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.progress-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); }
+.progress-count { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+.progress-track { height: 2px; background: var(--line); }
+.progress-fill { height: 2px; background: var(--gold); width: 0%; transition: width 0.5s ease; }
+
+/* FORMA */
+.forma { max-width: 680px; margin: 0 auto; padding: 0 48px 100px; }
+
+/* SECTION DIVIDER */
+.sec-div { display: flex; align-items: center; gap: 16px; margin: 40px 0 20px; }
+.sec-div-line { flex: 1; height: 1px; background: var(--line); }
+.sec-div-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+/* INPUT GROUPS */
+.input-group { margin-bottom: 12px; }
+.input-group label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); margin-bottom: 8px; }
+.input-group input, .input-group select { width: 100%; padding: 16px 18px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--dark); background: var(--white); border: 1px solid var(--line); outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none; border-radius: 0; }
+.input-group input:focus, .input-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+.select-wrap { position: relative; }
+.select-wrap::after { content: '↓'; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 14px; pointer-events: none; }
+
+/* PITANJE */
+.pitanje { background: var(--white); border: 1px solid var(--line); border-left: 3px solid var(--line); padding: 28px 32px; margin-bottom: 8px; transition: border-left-color 0.3s, opacity 0.5s ease, transform 0.5s ease; opacity: 0; transform: translateY(16px); }
+.pitanje.visible { opacity: 1; transform: translateY(0); }
+.pitanje.answered { border-left-color: var(--gold); }
+.pitanje-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; }
+.pitanje-num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--line); line-height: 1; letter-spacing: -2px; flex-shrink: 0; transition: color 0.3s; }
+.pitanje.answered .pitanje-num { color: rgba(201,168,76,0.2); }
+.pitanje-tekst { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; font-style: italic; color: var(--dark); line-height: 1.5; letter-spacing: -0.3px; }
+
+/* LIKERT */
+.likert { display: flex; flex-direction: column; gap: 4px; }
+.likert input[type=radio] { display: none; }
+.likert label { display: flex; align-items: center; gap: 16px; padding: 13px 18px; font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--mid); background: var(--bg); border: 1px solid var(--line); cursor: pointer; transition: all 0.2s ease; }
+.likert label::before { content: ''; width: 16px; height: 16px; border: 1.5px solid var(--line); border-radius: 50%; flex-shrink: 0; transition: all 0.2s ease; }
+.likert label:hover { border-color: var(--gold); color: var(--dark); background: var(--gold-pale); }
+.likert label:hover::before { border-color: var(--gold); }
+.likert input:checked + label { background: var(--dark); color: var(--white); border-color: var(--dark); }
+.likert input:checked + label::before { background: var(--gold); border-color: var(--gold); }
+
+/* ERROR */
+.err { background: #FEF6F3; border: 1px solid #F0997B; border-left: 3px solid #D85A30; padding: 14px 18px; margin-bottom: 16px; font-size: 13px; color: #4A1B0C; display: none; font-weight: 500; letter-spacing: 0.2px; }
+
+/* SUBMIT */
+.submit-wrap { margin-top: 40px; }
+.btn-submit { display: inline-flex; align-items: center; gap: 12px; width: 100%; justify-content: center; background: var(--dark); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 20px 40px; border: none; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.btn-submit::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--gold); transition: width 0.3s ease; }
+.btn-submit:hover:not(:disabled) { background: var(--gold); }
+.btn-submit:hover:not(:disabled)::before { width: 0; }
+.btn-submit:disabled { background: var(--line); color: var(--soft); cursor: not-allowed; }
+.btn-submit:disabled::before { display: none; }
 .btn-arrow { font-size: 18px; transition: transform 0.3s ease; }
-.btn-primary:hover .btn-arrow { transform: translateX(4px); }
-.hero-note { margin-top: 20px; font-size: 12px; color: var(--soft); letter-spacing: 0.5px; opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
-.scroll-hint { margin-top: 28px; display: inline-flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--soft); font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards; transition: color 0.3s ease; }
-.scroll-hint:hover { color: var(--gold); }
-.scroll-arrow { font-size: 18px; animation: bounce 1.5s ease infinite; display: block; }
+.btn-submit:hover:not(:disabled) .btn-arrow { transform: translateX(4px); }
+.napomena { font-size: 12px; font-weight: 300; color: var(--soft); text-align: center; margin-top: 16px; line-height: 1.6; letter-spacing: 0.2px; }
 
-/* HOW IT WORKS */
-.section { padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
-.section-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.section-title { font-family: 'Syne', sans-serif; font-size: clamp(32px, 4vw, 52px); font-weight: 800; color: var(--dark); letter-spacing: -2px; line-height: 1.08; margin-bottom: 16px; }
-.section-title em { font-style: italic; color: var(--gold); }
-.section-body { font-size: 17px; font-weight: 300; color: var(--mid); line-height: 1.75; max-width: 540px; margin-bottom: 56px; }
-
-/* STEPS */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-.step { background: var(--white); padding: 44px 36px; border-top: 3px solid var(--line); transition: border-top-color 0.3s; }
-.step:hover { border-top-color: var(--gold); }
-.step-num { font-family: 'Syne', sans-serif; font-size: 60px; font-weight: 800; color: var(--line); line-height: 1; letter-spacing: -3px; margin-bottom: 24px; transition: color 0.3s; }
-.step:hover .step-num { color: var(--gold-pale); }
-.step-title { font-size: 17px; font-weight: 600; color: var(--dark); margin-bottom: 10px; letter-spacing: -0.3px; }
-.step-desc { font-size: 14px; font-weight: 300; color: var(--soft); line-height: 1.8; }
-
-/* PRIVACY */
-.privacy-box { background: var(--white); border-left: 3px solid var(--gold); padding: 28px 32px; margin-top: 48px; display: flex; gap: 20px; align-items: flex-start; }
-.privacy-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-.privacy-title { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 6px; letter-spacing: -0.2px; }
-.privacy-text { font-size: 13px; font-weight: 300; color: var(--soft); line-height: 1.7; }
-
-/* BOTTOM CTA */
-.bottom-cta { background: var(--dark); padding: 120px 48px; text-align: center; position: relative; overflow: hidden; }
-.bottom-cta::before { content: 'PREFORMA'; position: absolute; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 200px; color: rgba(255,255,255,0.015); top: 50%; left: 50%; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; letter-spacing: -8px; }
-.bottom-cta-inner { max-width: 600px; margin: 0 auto; position: relative; }
-.bottom-cta-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-.bottom-cta-title { font-family: 'Syne', sans-serif; font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; color: var(--white); letter-spacing: -2.5px; line-height: 1.08; margin-bottom: 44px; }
-.bottom-cta-title em { font-style: italic; color: var(--gold); }
-.btn-gold { display: inline-flex; align-items: center; gap: 12px; background: var(--gold); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; padding: 18px 40px; border: none; cursor: pointer; transition: all 0.3s ease; }
-.btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.4); }
+/* SUCCESS */
+.success { display: none; min-height: 100vh; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 40px; }
+.success.visible { display: flex; }
+.success-check { width: 72px; height: 72px; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 32px; font-size: 28px; color: var(--gold); animation: fadeUp 0.6s ease forwards; }
+.success-title { font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 52px); font-weight: 800; color: var(--dark); letter-spacing: -2px; margin-bottom: 16px; animation: fadeUp 0.6s ease 0.1s both; }
+.success-title em { font-style: italic; color: var(--gold); }
+.success-text { font-size: 17px; font-weight: 300; color: var(--mid); line-height: 1.75; max-width: 420px; animation: fadeUp 0.6s ease 0.2s both; }
 
 /* FOOTER */
-.footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; }
-.footer-logo { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--white); text-decoration: none; }
+.footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: 'Syne', sans-serif; font-size: 18px; color: var(--white); text-decoration: none; }
 .footer-logo span { color: var(--gold); }
 .footer-copy { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.3px; }
-.footer-author { font-size: 11px; color: rgba(255,255,255,0.3); text-align: right; line-height: 1.5; }
-
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .header { padding: 16px 20px; }
   .header-tag { display: none; }
-  .header-cta { display: none; }
-  .hero { padding: 110px 20px 60px; }
-  .section { padding: 72px 20px; }
-  .steps { grid-template-columns: 1fr; }
-  .bottom-cta { padding: 80px 20px; }
-  .footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
-  .footer-author { text-align: center; }
+  .hero { padding: 110px 20px 36px; }
+  .forma { padding: 0 20px 80px; }
+  .pitanje { padding: 20px; }
+  .likert label { font-size: 13px; padding: 11px 14px; }
+  .footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
 }
 </style>
 </head>
@@ -106,112 +119,268 @@ html, body { width: 100%; max-width: 100vw; overflow-x: hidden; }
 
 <header class="header">
   <a href="#" class="logo"><span>Pre</span>Forma</a>
-  <div class="header-tag">Where design starts with understanding</div>
-  <a href="#" class="header-cta" id="headerCta">Popuni upitnik →</a>
+  <div class="header-tag">Upitnik za klijente</div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-label">Upitnik za klijente &middot; 3 minuta</div>
-  <h1 class="hero-title">
-    Vaš prostor počinje<br>od <em>razumevanja.</em>
-  </h1>
-  <p class="hero-sub">
-    Pre nego što počnemo sa dizajnom, želimo da razumemo kako razmišljate i šta vam je zaista važno. Upitnik traje oko 3 minuta.
-  </p>
-  <a href="#" class="btn-primary" id="mainCta">
-    Popuni upitnik
-    <span class="btn-arrow">→</span>
-  </a>
-  <p class="hero-note">10 pitanja &middot; 3 minuta &middot; Nema tačnih ni pogrešnih odgovora</p>
-  <a href="#section-how" class="scroll-hint">
-    Saznaj više
-    <span class="scroll-arrow">↓</span>
-  </a>
-</section>
+<div id="mainForm">
 
-<!-- HOW IT WORKS -->
-<section id="section-how" class="section reveal">
-  <div class="section-label">Proces</div>
-  <h2 class="section-title">Kako to <em>funkcioniše.</em></h2>
-  <p class="section-body">Vaši odgovori pomažu vašem projektantu da razume vaš stil donošenja odluka i pristup projektu — pre prvog sastanka. Bez psihološkog žargona. Bez tačnih ni pogrešnih odgovora.</p>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Popunite upitnik</div>
-      <div class="step-desc">Deset kratkih pitanja o vašim potrebama i pristupu projektu. Traje oko 3 minuta i formulisan je kao standardni projektni intake.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Analiza u pozadini</div>
-      <div class="step-desc">Vaši odgovori se obrađuju kroz sistem razvijen specifično za kontekst dizajna i arhitekture — koji prepoznaje obrasce saradnje i komunikacije relevantne za projekat.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Bolji projekat</div>
-      <div class="step-desc">Vaš projektant ulazi na prvi sastanak već razumevajući vaš pristup — manje nagađanja, jasnija komunikacija i proces koji je usklađen sa tim kako vi stvarno radite.</div>
+  <div class="hero">
+    <div class="hero-label">Upitnik · 3 minuta</div>
+    <h1 class="hero-title">Vaš prostor počinje<br>od <em>razumevanja.</em></h1>
+    <p class="hero-sub">Pre nego što počnemo sa dizajnom, želimo da razumemo kako razmišljate i šta vam je zaista važno. Nema tačnih ni pogrešnih odgovora.</p>
+    <div class="progress-outer">
+      <div class="progress-meta">
+        <span class="progress-label">Napredak</span>
+        <span class="progress-count" id="pfCount">0 / 16</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="pfBar"></div></div>
     </div>
   </div>
 
-  <div class="privacy-box reveal">
-    <div class="privacy-icon">🔒</div>
-    <div>
-      <div class="privacy-title">Vaši odgovori su privatni</div>
-      <div class="privacy-text">Rezultati se dele isključivo sa vašim projektantom kao alat za pripremu. Nećete dobiti izveštaj niti ocenu — upitnik postoji da poboljša saradnju, ne da vas procenjuje kao osobu.</div>
+  <div class="forma">
+    <div class="err" id="errMsg">Molimo vas da popunite sva polja pre slanja.</div>
+
+    <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Vaši podaci</div><div class="sec-div-line"></div></div>
+
+    <div class="input-group">
+      <label>Ime i prezime</label>
+      <input type="text" id="fIme" placeholder="Unesite ime i prezime">
     </div>
-  </div>
-</section>
 
-<!-- BOTTOM CTA -->
-<section class="bottom-cta">
-  <div class="bottom-cta-inner reveal">
-    <div class="bottom-cta-label">Spremni ste</div>
-    <h2 class="bottom-cta-title">Tri minuta.<br><em>Bolji početak.</em></h2>
-    <a href="#" class="btn-gold" id="bottomCta">
-      Popuni upitnik
-      <span class="btn-arrow">→</span>
-    </a>
-  </div>
-</section>
+    <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">O projektu</div><div class="sec-div-line"></div></div>
 
-<!-- FOOTER -->
+    <div class="input-group">
+      <label>Tip usluge</label>
+      <div class="select-wrap">
+        <select id="fUsluga">
+          <option value="">— Odaberite —</option>
+          <option value="Projektovanje enterijera">Projektovanje enterijera</option>
+          <option value="Arhitektonsko projektovanje">Arhitektonsko projektovanje</option>
+          <option value="Enterijer + arhitektura (kompletan paket)">Enterijer + arhitektura (kompletan paket)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Tip projekta</label>
+      <div class="select-wrap">
+        <select id="fTipProjekta">
+          <option value="">— Odaberite —</option>
+          <option value="Projektovanje enterijera">Projektovanje enterijera</option>
+          <option value="Arhitektonski projekat">Arhitektonski projekat</option>
+          <option value="Design &amp; Build - isti tim radi i projektovanje i izvođenje">Design &amp; Build</option>
+          <option value="Adaptacija / rekonstrukcija">Adaptacija / rekonstrukcija</option>
+          <option value="Novogradnja">Novogradnja</option>
+          <option value="Komercijalni prostor">Komercijalni prostor</option>
+          <option value="Hospitality projekat (hoteli, restorani, apartmani)">Hospitality projekat</option>
+          <option value="Investitorski projekat">Investitorski projekat</option>
+          <option value="Premium / Luxury projekat">Premium / Luxury projekat</option>
+          <option value="Fast-track projekat (ubrzana realizacija)">Fast-track projekat</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Okvirna skala projekta</label>
+      <div class="select-wrap">
+        <select id="fSkala">
+          <option value="">— Odaberite —</option>
+          <option value="Mali (stan, jedna prostorija, do 80m²)">Mali (do 80m²)</option>
+          <option value="Srednji (stan/kuća, 80-250m²)">Srednji (80–250m²)</option>
+          <option value="Veliki (objekat, više prostorija, 250m²+)">Veliki (250m²+)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Okvirni budžet za realizaciju</label>
+      <div class="select-wrap">
+        <select id="fBudzet">
+          <option value="">— Odaberite —</option>
+          <option value="Do 10.000 EUR">Do 10.000 EUR</option>
+          <option value="10.000 – 30.000 EUR">10.000 – 30.000 EUR</option>
+          <option value="30.000 – 80.000 EUR">30.000 – 80.000 EUR</option>
+          <option value="Preko 80.000 EUR">Preko 80.000 EUR</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Ko učestvuje u donošenju odluka?</label>
+      <div class="select-wrap">
+        <select id="fKoOdlucuje">
+          <option value="">— Odaberite —</option>
+          <option value="Samo ja">Samo ja</option>
+          <option value="Ja i partner / suprug / supruga">Ja i partner / suprug / supruga</option>
+          <option value="Više osoba (porodica, tim, investitori)">Više osoba</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Pitanja</div><div class="sec-div-line"></div></div>
+
+    <div id="pfPitanja"></div>
+
+    <div class="submit-wrap">
+      <div class="err" id="errMsg2">Molimo vas da odgovorite na sva pitanja pre slanja.</div>
+      <button class="btn-submit" id="pfBtn" disabled>
+        Pošalji upitnik
+        <span class="btn-arrow">→</span>
+      </button>
+      <p class="napomena">Vaši odgovori su poverljivi i koriste se isključivo u svrhu pripreme za projekat.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="success" id="successMsg">
+  <div class="success-check">✓</div>
+  <h2 class="success-title">Hvala <em>Vam.</em></h2>
+  <p class="success-text">Vaši odgovori su uspešno poslati. Vaš projektant će ih pregledati i kontaktirati vas u najkraćem roku.</p>
+</div>
+
 <footer class="footer">
   <a href="#" class="footer-logo"><span>Pre</span>Forma</a>
   <div class="footer-copy">Where design starts with understanding</div>
-  <div class="footer-author">Sava Pivnički<br>psihotrot@gmail.com</div>
+  <div class="footer-copy">Sava Pivnički · psihotrot@gmail.com</div>
 </footer>
 
 <script>
 function getEmailFromUrl() {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    return params.get('a') || params.get('email') || '';
-  } catch(e) { return ''; }
+  var p = new URLSearchParams(window.location.search);
+  return p.get('a') || '';
 }
 
-function buildFormLink() {
-  var email = getEmailFromUrl();
-  return 'https://psihotrot-tech.github.io/PreForma/preforma_upitnik.html?a=' + encodeURIComponent(email);
-}
+var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzFN_sz1luIZAcSEaiSOEDwZdON-7uLwU0ZAf9WHPsaS5taY5BGCzRqIszhz2fvUrzNLg/exec';
 
-function init() {
-  var link = buildFormLink();
-  document.getElementById('mainCta').href   = link;
-  document.getElementById('bottomCta').href = link;
-  document.getElementById('headerCta').href = link;
-}
+var ENTRIES = [
+  {tekst:'Volim da unapred znam tačno kako će prostor izgledati pre nego što se krene u realizaciju.'},
+  {tekst:'Prijatnije mi je kada imam više predloga dizajna između kojih mogu da biram.'},
+  {tekst:'Male razlike u bojama, linijama i detaljima su mi veoma važne.'},
+  {tekst:'Radije se oslanjam na preporuku dizajnera nego na sopstveno istraživanje.'},
+  {tekst:'Ako mi se ideja dopadne, nemam problem da brzo donesem odluku.'},
+  {tekst:'Važno mi je da prostor ima jasnu funkciju, čak i ako to znači manje estetike.'},
+  {tekst:'Često menjam mišljenje kada vidim novu ideju ili inspiraciju.'},
+  {tekst:'Volim da učestvujem u svakom koraku dizajna enterijera.'},
+  {tekst:'Više mi znači da se u prostoru „osećam dobro" nego da on bude u trendu.'},
+  {tekst:'Neprijatno mi je kada se proces oduži zbog dodatnih korekcija.'}
+];
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else { init(); }
+var OPCIJE = ['Uopšte se ne slažem','Delimično se ne slažem','Nisam siguran/a','Delimično se slažem','Potpuno se slažem'];
 
+var container = document.getElementById('pfPitanja');
+ENTRIES.forEach(function(e, i) {
+  var div = document.createElement('div');
+  div.className = 'pitanje';
+  div.id = 'pit'+i;
+  var opcHtml = OPCIJE.map(function(o, j) {
+    return '<div><input type="radio" name="p'+i+'" id="p'+i+'o'+j+'" value="'+o+'">'
+      +'<label for="p'+i+'o'+j+'">'+o+'</label></div>';
+  }).join('');
+  div.innerHTML = '<div class="pitanje-header">'
+    +'<div class="pitanje-num">'+(i+1)+'</div>'
+    +'<div class="pitanje-tekst">'+e.tekst+'</div>'
+    +'</div>'
+    +'<div class="likert">'+opcHtml+'</div>';
+  container.appendChild(div);
+});
+
+// Scroll reveal
 var observer = new IntersectionObserver(function(entries) {
   entries.forEach(function(entry) {
     if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
   });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.pitanje').forEach(function(el) { observer.observe(el); });
+
+var TOTAL = ENTRIES.length + 6;
+
+function countFilled() {
+  var n = 0;
+  ENTRIES.forEach(function(e, i) {
+    if (document.querySelector('input[name="p'+i+'"]:checked')) n++;
+  });
+  if (document.getElementById('fIme').value.trim().length >= 1) n++;
+  if (document.getElementById('fUsluga').value) n++;
+  if (document.getElementById('fTipProjekta').value) n++;
+  if (document.getElementById('fSkala').value) n++;
+  if (document.getElementById('fBudzet').value) n++;
+  if (document.getElementById('fKoOdlucuje').value) n++;
+  return n;
+}
+
+function updateProgress() {
+  var n = countFilled();
+  var pct = Math.round((n / TOTAL) * 100);
+  document.getElementById('pfBar').style.width = pct+'%';
+  document.getElementById('pfCount').textContent = n+' / '+TOTAL;
+  document.getElementById('pfBtn').disabled = (n < TOTAL);
+}
+
+document.querySelectorAll('input[type=radio]').forEach(function(r) {
+  r.addEventListener('change', function() {
+    var idx = parseInt(r.name.slice(1));
+    document.getElementById('pit'+idx).classList.add('answered');
+    updateProgress();
+  });
+});
+
+['fIme','fUsluga','fTipProjekta','fSkala','fBudzet','fKoOdlucuje'].forEach(function(id) {
+  var el = document.getElementById(id);
+  el.addEventListener('input', updateProgress);
+  el.addEventListener('change', updateProgress);
+});
+
+updateProgress();
+
+document.getElementById('pfBtn').addEventListener('click', function() {
+  var arhEmail = getEmailFromUrl();
+  var ime = document.getElementById('fIme').value.trim();
+  var usluga = document.getElementById('fUsluga').value;
+  var tipProjekta = document.getElementById('fTipProjekta').value;
+  var skala = document.getElementById('fSkala').value;
+  var budzet = document.getElementById('fBudzet').value;
+  var koOdlucuje = document.getElementById('fKoOdlucuje').value;
+
+  if (!ime || !usluga || !tipProjekta || !skala || !budzet || !koOdlucuje) {
+    document.getElementById('errMsg').style.display = 'block';
+    return;
+  }
+  for (var i = 0; i < ENTRIES.length; i++) {
+    if (!document.querySelector('input[name="p'+i+'"]:checked')) {
+      document.getElementById('errMsg2').style.display = 'block';
+      window.scrollTo({top: document.getElementById('pit'+i).offsetTop - 100, behavior: 'smooth'});
+      return;
+    }
+  }
+  document.getElementById('errMsg').style.display = 'none';
+  document.getElementById('errMsg2').style.display = 'none';
+
+  var payload = {
+    ime: ime, usluga: usluga, tipProjekta: tipProjekta,
+    skala: skala, budzet: budzet, koOdlucuje: koOdlucuje, email: arhEmail
+  };
+  ENTRIES.forEach(function(e, i) {
+    payload['p'+(i+1)] = document.querySelector('input[name="p'+i+'"]:checked').value;
+  });
+
+  document.getElementById('pfBtn').disabled = true;
+  document.getElementById('pfBtn').textContent = 'Šaljem...';
+
+  fetch(WEB_APP_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function() {
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successMsg').classList.add('visible');
+    window.scrollTo(0,0);
+  }).catch(function() {
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successMsg').classList.add('visible');
+    window.scrollTo(0,0);
+  });
+});
 </script>
 </body>
 </html>
